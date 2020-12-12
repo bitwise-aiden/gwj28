@@ -13,14 +13,14 @@
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
-"frames": [ ExtResource( 1 ) ],
-"loop": true,
-"name": "right",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 2 ) ],
 "loop": true,
 "name": "left",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "right",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 4 ) ],
@@ -49,8 +49,9 @@ is_default = true
 [node name="collision" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
-[node name="inventory" parent="." instance=ExtResource( 8 )]
-
 [node name="sprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
 animation = "down"
+
+[node name="inventory" parent="." instance=ExtResource( 8 )]
+position = Vector2( -400, 250 )

@@ -7,7 +7,7 @@ export ( Resource ) var pickup_resource = null
 
 var speed_max = 500.0
 
-var acceleration_time = 2.0
+var acceleration_time = 0.5
 var time_elapsed = 0.0
 
 var target = null
@@ -32,7 +32,7 @@ func _process( delta: float ) -> void:
 		)
 		
 		var time = self.time_elapsed / self.acceleration_time
-		var speed = lerp( 0, self.speed_max, 1 - pow( 1 - time, 5 ) )
+		var speed = lerp( 0, self.speed_max, 1 - pow( 1 - time, 2 ) )
 		
 		self.position = self.position.move_toward( 
 			target.position, 

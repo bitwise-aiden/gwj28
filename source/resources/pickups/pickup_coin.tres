@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource( 2 )
-method = "pick_up_coin"
+method = "pick_up_item"
 name = "Coin"
 quantity = 1
 radius = 64.0

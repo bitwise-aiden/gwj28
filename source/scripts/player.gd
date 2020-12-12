@@ -2,7 +2,7 @@ class_name Player
 extends KinematicBody2D
 
 
-var speed: float = 200.0
+var speed: float = 300.0
 
 
 func _process( delta: float ) -> void:

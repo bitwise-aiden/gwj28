@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://source/assets/tile_set_grass.tres" type="TileSet" id=1]
 [ext_resource path="res://source/scripts/grass.gd" type="Script" id=2]
 [ext_resource path="res://source/scripts/main.gd" type="Script" id=3]
 [ext_resource path="res://source/scenes/player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://source/scenes/pickup.tscn" type="PackedScene" id=5]
+[ext_resource path="res://source/assets/tile_set_fence.tres" type="TileSet" id=6]
 
 [node name="main" type="YSort"]
 script = ExtResource( 3 )
@@ -20,3 +21,10 @@ script = ExtResource( 2 )
 
 [node name="pickup" parent="." instance=ExtResource( 5 )]
 position = Vector2( 329.988, 216.642 )
+
+[node name="scenery" type="TileMap" parent="."]
+z_index = 2
+tile_set = ExtResource( 6 )
+cell_size = Vector2( 32, 32 )
+format = 1
+tile_data = PoolIntArray( 327666, 0, 0, 327667, 3, 0, 327668, 1, 0, 327669, 2, 0, 327670, 3, 0, 327671, 1, 0, 327672, 3, 0, 327673, 3, 0, 327674, 3, 0, 327675, 1, 0, 327676, 3, 0, 327677, 0, 0, 327678, 2, 0, 327679, 3, 0, 262144, 3, 0, 262145, 3, 0, 262146, 3, 0, 262147, 0, 0, 262148, 1, 0, 262149, 3, 0, 262150, 3, 0, 262151, 3, 0, 262152, 0, 0, 262153, 3, 0, 262154, 1, 0, 262155, 0, 0, 262156, 3, 0 )
