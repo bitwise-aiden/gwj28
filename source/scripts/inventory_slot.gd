@@ -1,7 +1,20 @@
-extends Control
+extends TextureButton
 
 
 export ( int ) var inventory_index = 0
+
+
+func _ready() -> void:
+	self.add_to_group( "inventory_slot" )
+
+func _process(delta):
+	if self.has_point( self.get_global_mouse_position() ):
+		print(self.name)
+
+
+func has_point( point: Vector2 ):
+	var rect = Rect2(self.rect_global_position, self.rect_size)
+	return rect.has_point( point )
 
 
 func set_texture( texture: Texture ) -> void:
@@ -11,16 +24,3 @@ func set_texture( texture: Texture ) -> void:
 func set_quantity( quantity: int ) -> void:
 	$quantity.visible = quantity > 1
 	$quantity.text = "%d" % [ quantity ] 
-
-
-func _on_pressed():
-	Event.emit_signal( "inventory_slot_selected", self.inventory_index )
-
-
-func _on_enter():
-	print('Hello world', self.inventory_index)
-	Event.emit_signal( "inventory_slot_entered", self.inventory_index )
-
-
-func _on_exit():
-	Event.emit_signal( "inventory_slot_exited", self.inventory_index )

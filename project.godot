@@ -63,6 +63,11 @@ _global_script_classes=[ {
 "class": "TaskQueue",
 "language": "GDScript",
 "path": "res://tools/scripts/task/task_queue.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "chicken",
+"language": "GDScript",
+"path": "res://source/scripts/chicken.gd"
 } ]
 _global_script_class_icons={
 "BaseTask": "",
@@ -75,7 +80,8 @@ _global_script_class_icons={
 "Player": "",
 "PlayerInput": "",
 "Task": "",
-"TaskQueue": ""
+"TaskQueue": "",
+"chicken": ""
 }
 
 [application]

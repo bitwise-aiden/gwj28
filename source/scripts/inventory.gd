@@ -22,9 +22,10 @@ class InventorySlot:
 		self.display.set_quantity( self.quantity )
 	
 	
-	func increment_quantity( amount: int = 1 ):
+	func increment_quantity( amount: int = 1, update_display: int = true ):
 		self.quantity += amount
-		self.display.set_quantity( self.quantity )
+		if update_display:
+			self.display.set_quantity( self.quantity )
 	
 	func is_empty():
 		return self.pickup_resource == null
@@ -32,7 +33,8 @@ class InventorySlot:
 	func select():
 		self.display.set_texture( null )
 		self.display.set_quantity( 0 )
-		
+	
+	
 	func unselect():
 		if !self.is_empty():
 			self.display.set_texture( self.pickup_resource.texture )
@@ -70,14 +72,10 @@ var just_released = false
 
 
 func _ready() -> void:
-	Event.connect( "inventory_slot_entered", self, "inventory_slot_entered" )
-	Event.connect( "inventory_slot_exited", self, "inventory_slot_exited" )
-	Event.connect( "inventory_slot_selected", self, "inventory_slot_selected" )
 	Event.connect( "pick_up_coin", self, "pick_up_coin" )
 	Event.connect( "pick_up_item", self, "pick_up_item" )
 	
-	var display_slots = $inventory_slots/row_0.get_children() + $inventory_slots/row_1/.get_children() 
-	for display_slot in display_slots:
+	for display_slot in $inventory_slots.get_children() :
 		inventory_slots.append( InventorySlot.new( display_slot ) )
 
 
@@ -86,37 +84,51 @@ func _process( delta: float ) -> void:
 
 
 func handle_selected_slot() -> void:
+	$selected_item.global_position = self.get_global_mouse_position()
+	
+	if Input.is_action_just_pressed( "mouse" ):
+		self.select_slot()
+	elif Input.is_action_just_released( "mouse" ):
+		self.unselect_slot()
+
+
+func find_hovered_slot():
+	var mouse_position = self.get_global_mouse_position()
+	
+	for slot in self.inventory_slots:
+		if slot.display.has_point( mouse_position ):
+			return slot
+	
+	return null
+
+
+func select_slot():
+	var selected_slot = self.find_hovered_slot()
+	if !selected_slot:
+		return
+
+	self.selected_inventory_slot = selected_slot
+	self.selected_inventory_slot.select()
+	
+	$selected_item.texture = self.selected_inventory_slot.pickup_resource.texture
+	$selected_item.visible = true
+
+
+func unselect_slot():
 	if self.selected_inventory_slot == null:
 		return
-	
-	if !Input.is_mouse_button_pressed( BUTTON_LEFT ):
-		if self.hovered_inventory_slot:
-			self.selected_inventory_slot.swap( 
-				self.inventory_slots[ self.hovered_inventory_slot ] 
-			)
-		else:
-			self.selected_inventory_slot.unselect()
 		
-		self.selected_inventory_slot = null
-		self.hovered_inventory_slot = null
-		self.just_released = false
-
-
-func inventory_slot_exited( index ): 
-	self.hovered_inventory_slot = null
-
-
-func inventory_slot_entered( index ):
-	print('changed')
-	self.hovered_inventory_slot = index
-
-
-func inventory_slot_selected( index ):
-	if self.inventory_slots[ index ].is_empty():
-		return
+	var hovered_inventory_slot = self.find_hovered_slot()
 	
-	self.selected_inventory_slot = self.inventory_slots[ index ]
-	self.selected_inventory_slot.select()
+	if hovered_inventory_slot:
+		self.selected_inventory_slot.swap( 
+			hovered_inventory_slot
+		)
+	else:
+		self.selected_inventory_slot.unselect()
+	
+	self.selected_inventory_slot = null
+	$selected_item.visible = false
 
 
 func pick_up_coin( pickup ) -> void:
@@ -131,7 +143,7 @@ func pick_up_item( pickup ) -> void:
 			var slot = self.inventory_slots[ i ]
 			
 			if slot.pickup_resource.name == pickup.name:
-				slot.increment_quantity()
+				slot.increment_quantity( 1, slot != self.selected_inventory_slot )
 				return
 		elif empty_index == -1:
 			empty_index = i

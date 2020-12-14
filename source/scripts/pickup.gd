@@ -10,7 +10,11 @@ var speed_max = 500.0
 var acceleration_time = 0.5
 var time_elapsed = 0.0
 
+onready var oscillation_time_elapsed = randf() * PI
+
 var target = null
+
+onready var shadow_size = $shadow.rect_size.x
 
 
 func _ready() -> void:
@@ -46,7 +50,14 @@ func _process( delta: float ) -> void:
 				self.pickup_resource 
 			)
 			self.call_deferred( "queue_free" )
-
+	else:
+		self.oscillation_time_elapsed += delta * 5.0
+		$sprite.position.y = sin( self.oscillation_time_elapsed ) * 2.0
+		
+		var offset = sin( self.oscillation_time_elapsed ) * 0.5 + 0.5
+		
+		$shadow.rect_size.x = self.shadow_size - offset * 6.0
+		$shadow.rect_position.x = -self.shadow_size * 0.5 + offset * 3.0
 
 func _on_body_entered( body ):
 	if body is Player:
