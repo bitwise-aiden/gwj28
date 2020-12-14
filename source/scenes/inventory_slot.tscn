@@ -4,32 +4,37 @@
 [ext_resource path="res://source/scripts/inventory_slot.gd" type="Script" id=2]
 
 [node name="inventory_slot" type="TextureButton"]
-margin_right = 32.0
-margin_bottom = 32.0
+margin_right = 64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="background" type="TextureRect" parent="."]
+margin_right = 64.0
+margin_bottom = 64.0
 texture = ExtResource( 1 )
+stretch_mode = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="item" type="TextureRect" parent="."]
-margin_right = 32.0
-margin_bottom = 32.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 56.0
+margin_bottom = 56.0
+stretch_mode = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="quantity" type="Label" parent="."]
 visible = false
-margin_left = -16.0
-margin_top = -16.0
-margin_right = 16.0
-margin_bottom = 16.0
+margin_right = 48.0
+margin_bottom = 48.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_outline_modulate = Color( 1, 1, 1, 1 )
 align = 2

@@ -1,5 +1,5 @@
 class_name Inventory
-extends Node2D
+extends Control
 
 
 class InventorySlot:
@@ -22,10 +22,17 @@ class InventorySlot:
 		self.display.set_quantity( self.quantity )
 	
 	
-	func increment_quantity( amount: int = 1, update_display: int = true ):
-		self.quantity += amount
+	func increment_quantity( update_display: int = true ):
+		self.quantity += 1
 		if update_display:
 			self.display.set_quantity( self.quantity )
+	
+	func decrement_quantity():
+		self.quantity -= 1
+		if self.quantity <= 0:
+			self.pickup_resource = null
+			self.select()
+			
 	
 	func is_empty():
 		return self.pickup_resource == null
@@ -70,12 +77,15 @@ var hovered_inventory_slot = null
 
 var just_released = false
 
+var focused_crafting_area = null
+onready var crafting_menu = null
+
 
 func _ready() -> void:
 	Event.connect( "pick_up_coin", self, "pick_up_coin" )
 	Event.connect( "pick_up_item", self, "pick_up_item" )
 	
-	for display_slot in $inventory_slots.get_children() :
+	for display_slot in $slots.get_children() :
 		inventory_slots.append( InventorySlot.new( display_slot ) )
 
 
@@ -104,12 +114,12 @@ func find_hovered_slot():
 
 func select_slot():
 	var selected_slot = self.find_hovered_slot()
-	if !selected_slot:
+	if !selected_slot || selected_slot.is_empty():
 		return
 
 	self.selected_inventory_slot = selected_slot
 	self.selected_inventory_slot.select()
-	
+
 	$selected_item.texture = self.selected_inventory_slot.pickup_resource.texture
 	$selected_item.visible = true
 
@@ -118,17 +128,35 @@ func unselect_slot():
 	if self.selected_inventory_slot == null:
 		return
 		
-	var hovered_inventory_slot = self.find_hovered_slot()
+	if !self.drop_in_crafting_area():
+		var hovered_inventory_slot = self.find_hovered_slot()
+		
+		if hovered_inventory_slot:
+			self.selected_inventory_slot.swap( 
+				hovered_inventory_slot
+			)
 	
-	if hovered_inventory_slot:
-		self.selected_inventory_slot.swap( 
-			hovered_inventory_slot
-		)
-	else:
-		self.selected_inventory_slot.unselect()
+	self.selected_inventory_slot.unselect()
 	
 	self.selected_inventory_slot = null
 	$selected_item.visible = false
+
+
+func drop_in_crafting_area():
+	if !self.focused_crafting_area:
+		return false
+	
+	var mouse_position = self.get_global_mouse_position()
+	if !self.crafting_menu.has_point( mouse_position ):
+		return false
+		
+	if !self.focused_crafting_area.add_item(
+			self.selected_inventory_slot.pickup_resource ):
+		return false 
+
+	self.selected_inventory_slot.decrement_quantity()
+	
+	return true
 
 
 func pick_up_coin( pickup ) -> void:
@@ -143,7 +171,7 @@ func pick_up_item( pickup ) -> void:
 			var slot = self.inventory_slots[ i ]
 			
 			if slot.pickup_resource.name == pickup.name:
-				slot.increment_quantity( 1, slot != self.selected_inventory_slot )
+				slot.increment_quantity( slot != self.selected_inventory_slot )
 				return
 		elif empty_index == -1:
 			empty_index = i
