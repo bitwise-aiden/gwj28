@@ -4,8 +4,6 @@ extends YSort
 
 func _ready() -> void:
 	randomize()
-	
-	Globals.main = self
 
 
 func _process( delta: float ) -> void:

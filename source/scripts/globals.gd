@@ -27,7 +27,7 @@ const INVENTORY_MAX_SIZE = 5
 
 
 # Location globals
-const KITCHEN_Y_LEVEL = -150
+const KITCHEN_Y_LEVEL = 300
 
 
 # Order globals
@@ -62,11 +62,16 @@ var RESOURCE_OMELETTE = load( "res://source/resources/pickups/pickup_omelette.tr
 
 # Scene globals
 var SCENE_PICKUP = load( "res://source/scenes/pickup.tscn" )
+var SCENE_STAR = load( "res://source/scenes/star.tscn" )
 
 
 # Screen globals
 const SCREEN_HEIGHT = 600
 const SCREEN_WIDTH = 1024
+
+
+# Star globals
+const STAR_MAX_SPEED = 10
 
 
 func is_in_kitchen( position: Vector2 ):

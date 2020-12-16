@@ -86,13 +86,13 @@ func _on_animation_finished():
 			self.set_state( states.wandering )
 			
 			if randi() % Globals.CHICKEN_SPAWN_COIN_CHANCE == 0:
-				var position = self.global_position + self.direction * 20.0
+				var position = self.positionposition + self.direction * 20.0
 				Globals.spawn_pickup( Globals.RESOURCE_COIN, position )
 		states.laying:
 			self.set_state( states.wandering )
 			
 			var offset = Vector2( self.direction.x * -2.0, -3.0 )
-			var position = self.global_position + offset
+			var position = self.position + offset
 			Globals.spawn_pickup( Globals.RESOURCE_EGG, position)
 
 
@@ -114,7 +114,7 @@ func set_state( incoming_state ) -> void:
 
 func _on_detector_body_entered(body):
 	if body is Player:
-		self.direction = (self.global_position - body.global_position).normalized()
+		self.direction = (self.position - body.position).normalized()
 		self.speed_modifier = Globals.CHICKEN_SPEED_MODIFER_MAX
 	elif self.speed_modifier > 1.0 && body.get_script() == self.get_script():
 		body.direction = self.direction

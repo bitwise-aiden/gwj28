@@ -6,7 +6,7 @@
 [sub_resource type="CircleShape2D" id=1]
 
 [node name="pickup" type="Node2D"]
-z_index = 1
+z_index = 5
 script = ExtResource( 2 )
 pickup_resource = ExtResource( 3 )
 

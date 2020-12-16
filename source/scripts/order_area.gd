@@ -1,4 +1,4 @@
-extends StaticBody2D
+extends VBoxContainer
 
 
 export (Array, Resource) var required_ingredients = []
@@ -39,10 +39,9 @@ func _process( delta: float) -> void:
 
 func has_point( point: Vector2 ) -> bool:
 	var rect = Rect2(
-		$collision.global_position - $collision.shape.extents,
-		$collision.shape.extents * 2.0
+		self.rect_global_position,
+		self.rect_size
 	)
-	
 	return rect.has_point( point )
 
 
@@ -60,7 +59,6 @@ func fulfill_order( order: Resource ) -> void:
 			order_items[ item.name ] -= 1
 			correct_items += 1.0
 	
-	print( correct_items, self.recipe.size() )
 	var correctness_ratio = min( 
 		correct_items / self.recipe.size(), 
 		1.0 
@@ -74,7 +72,6 @@ func fulfill_order( order: Resource ) -> void:
 	var time_score = ceil( time_ratio * 5.0 )
 
 	var total_score = int( ( correctness_score  + time_score ) / 2.0 )
-	print( correctness_score, time_score, total_score )
 	
 	Event.emit_signal( "order_fulfilled", total_score )
 	
@@ -86,6 +83,7 @@ func clear_recipe() -> void:
 	
 	$waiting_progress.visible = false
 	$order_items.visible = false
+	self.visible = false
 
 
 func update_displayed_recipe() -> void:
@@ -98,6 +96,7 @@ func update_displayed_recipe() -> void:
 	
 	$waiting_progress.visible = true
 	$order_items.visible = true
+	self.visible = true
 
 
 func update_recipe() -> void:

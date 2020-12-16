@@ -1,58 +1,24 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://source/assets/inventory_slot.png" type="Texture" id=1]
 [ext_resource path="res://source/scripts/order_area.gd" type="Script" id=2]
 [ext_resource path="res://source/resources/pickups/pickup_egg.tres" type="Resource" id=3]
 [ext_resource path="res://source/assets/egg.png" type="Texture" id=4]
 [ext_resource path="res://source/assets/health_container.png" type="Texture" id=5]
 [ext_resource path="res://source/assets/health_full.png" type="Texture" id=6]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 16, 16 )
-
-[node name="order_area" type="StaticBody2D"]
+[node name="order_area" type="VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
 script = ExtResource( 2 )
-required_ingredients = [ ExtResource( 3 ) ]
-optional_ingredients = [ ExtResource( 3 ) ]
-
-[node name="order_items" type="HBoxContainer" parent="."]
-margin_left = -52.0
-margin_top = 40.0
-margin_right = 52.0
-margin_bottom = 80.0
-mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="item_0" type="TextureRect" parent="order_items"]
-margin_right = 32.0
-margin_bottom = 40.0
-texture = ExtResource( 4 )
-
-[node name="item_1" type="TextureRect" parent="order_items"]
-margin_left = 36.0
-margin_right = 68.0
-margin_bottom = 40.0
-texture = ExtResource( 4 )
-
-[node name="item_2" type="TextureRect" parent="order_items"]
-margin_left = 72.0
-margin_right = 104.0
-margin_bottom = 40.0
-texture = ExtResource( 4 )
-
-[node name="sprite" type="Sprite" parent="."]
-texture = ExtResource( 1 )
-
-[node name="collision" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+required_ingredients = [ ExtResource( 3 ) ]
+optional_ingredients = [ ExtResource( 3 ) ]
 
 [node name="waiting_progress" type="TextureProgress" parent="."]
-margin_left = -50.0
-margin_top = 20.0
-margin_right = 50.0001
-margin_bottom = 60.0
+margin_right = 104.0
+margin_bottom = 20.0
 mouse_filter = 2
 max_value = 1.0
 step = 0.01
@@ -61,3 +27,29 @@ texture_progress = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="order_items" type="HBoxContainer" parent="."]
+margin_top = 24.0
+margin_right = 104.0
+margin_bottom = 56.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="item_0" type="TextureRect" parent="order_items"]
+margin_right = 32.0
+margin_bottom = 32.0
+texture = ExtResource( 4 )
+
+[node name="item_1" type="TextureRect" parent="order_items"]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+texture = ExtResource( 4 )
+
+[node name="item_2" type="TextureRect" parent="order_items"]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 32.0
+texture = ExtResource( 4 )

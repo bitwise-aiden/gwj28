@@ -60,7 +60,7 @@ func update_ui():
 
 
 func _on_cooking_timer_complete():
-	var position = self.global_position + self.done_direction * 25.0
+	var position = self.position + self.done_direction * 30.0
 	var pickup = Globals.RESOURCE_OMELETTE.duplicate()
 	var items_with_count = {}
 	

@@ -1,16 +1,16 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://source/assets/inventory_slot.png" type="Texture" id=1]
+[ext_resource path="res://source/assets/stove.png" type="Texture" id=1]
 [ext_resource path="res://source/scripts/crafting_area.gd" type="Script" id=2]
 [ext_resource path="res://source/assets/health_full.png" type="Texture" id=3]
 [ext_resource path="res://source/assets/health_container.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 16, 16 )
+extents = Vector2( 32, 25 )
 
 [node name="crafting_area" type="StaticBody2D"]
 scale = Vector2( 0.994671, 1.00387 )
-z_index = 1
+z_index = 5
 script = ExtResource( 2 )
 
 [node name="inventory_slot" type="Sprite" parent="."]
