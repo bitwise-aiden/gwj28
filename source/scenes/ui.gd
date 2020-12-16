@@ -6,4 +6,4 @@ onready var popularity_score = $popularity_score
 
 
 func _ready() -> void:
-	InstanceManager.ui = self
+	Globals.ui = self

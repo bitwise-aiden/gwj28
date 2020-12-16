@@ -2,10 +2,6 @@ class_name CraftingArea
 extends StaticBody2D
 
 export(Vector2) var done_direction = Vector2.UP
-onready var pickup_omelette_resource = load( "res://source/resources/pickups/pickup_omelette.tres" )
-
-const MAX_SIZE = 10
-const COOKING_TIME = 5.0
 
 enum states { adding = 0, cooking, done }
 
@@ -20,21 +16,31 @@ var items = []
 func _process( delta ):
 	match self.state:
 		states.cooking:
-			$cooking_progress.value = 1.0 - ($cooking_timer.time_left / self.COOKING_TIME)
+			$cooking_progress.value = 1.0 - (
+				$cooking_timer.time_left / 
+				Globals.CRAFTING_COOKING_TIME
+			)
 
 
 func add_item( pickup ) -> bool:
-	if self.items.size() == self.MAX_SIZE: 
+	if self.items.size() == Globals.CRAFTING_MAX_SIZE: 
 		return false
 	
 	self.items.append( pickup )
 	
 	self.update_ui()
 	
-	if self.items.size() == self.MAX_SIZE:
+	if self.should_start_cooking():
 		self.start_cooking()
 	
 	return true
+
+
+func should_start_cooking() -> bool:
+	return (
+		Globals.CRAFTING_AUTO_START && 
+		self.items.size() == Globals.CRAFTING_MAX_SIZE
+	)
 
 
 func start_cooking():
@@ -42,7 +48,7 @@ func start_cooking():
 		return
 		
 	self.state = states.cooking
-	$cooking_timer.start( self.COOKING_TIME )
+	$cooking_timer.start( Globals.CRAFTING_COOKING_TIME )
 	$cooking_progress.visible = true
 		
 	Event.emit_signal( "crafting_started" )
@@ -55,7 +61,7 @@ func update_ui():
 
 func _on_cooking_timer_complete():
 	var position = self.global_position + self.done_direction * 25.0
-	var pickup = self.pickup_omelette_resource.duplicate()
+	var pickup = Globals.RESOURCE_OMELETTE.duplicate()
 	var items_with_count = {}
 	
 	for item in self.items:
@@ -70,7 +76,7 @@ func _on_cooking_timer_complete():
 	
 	pickup.metadata[ "items" ] = items_with_count
 	
-	PickupSpawner.spawn( pickup, position )
+	Globals.spawn_pickup( pickup, position )
 	
 	self.items.clear()
 	self.state = states.adding

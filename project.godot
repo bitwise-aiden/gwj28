@@ -105,9 +105,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Event="*res://source/scripts/event.gd"
-PickupSpawner="*res://source/scripts/pickup_spawner.gd"
-DayCycle="*res://source/scripts/day_cycle.gd"
-InstanceManager="*res://source/scripts/instance_manager.gd"
+Globals="*res://source/scripts/globals.gd"
 
 [importer_defaults]
 

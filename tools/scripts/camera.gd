@@ -5,7 +5,10 @@ export( bool ) var is_default = false
 func _ready() -> void: 
 	if self.is_default: 
 		self.make_current()
-		InstanceManager.camera = self
+		Globals.camera = self
+
+func _process(delta):
+	pass
 
 
 func create_camera_shake( intensity: float, duration: float ) -> Task.CameraShake:

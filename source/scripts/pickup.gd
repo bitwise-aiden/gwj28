@@ -4,19 +4,13 @@ extends Node2D
 
 export ( Resource ) var pickup_resource = null
 
-
-var speed_max = 500.0
-
-var acceleration_time = 0.5
-var time_elapsed = 0.0
-
 onready var oscillation_time_elapsed = randf() * PI
-
-var target = null
-
 onready var shadow_size = $shadow.rect_size.x
 
 var drop_cooldown = 0.0
+var target = null
+var time_elapsed = 0.0
+
 
 func _ready() -> void:
 	if self.pickup_resource == null:
@@ -40,11 +34,11 @@ func _process( delta: float ) -> void:
 	):
 		self.time_elapsed = min( 
 			self.time_elapsed + delta, 
-			self.acceleration_time 
+			Globals.PICKUP_ACCELERATION_TIME 
 		)
 		
-		var time = self.time_elapsed / self.acceleration_time
-		var speed = lerp( 0, self.speed_max, 1 - pow( 1 - time, 2 ) )
+		var time = self.time_elapsed / Globals.PICKUP_ACCELERATION_TIME
+		var speed = lerp( 0, Globals.PICKUP_MAX_SPEED, 1 - pow( 1 - time, 2 ) )
 		
 		self.position = self.position.move_toward( 
 			target.position, 

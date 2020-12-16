@@ -2,24 +2,21 @@ class_name Player
 extends KinematicBody2D
 
 
-var speed: float = 400.0
+const shadow_size = 16
+
 var can_move: bool = true
-
 var focused_crafting_area = null
-
-onready var shadow_size = 16
 var oscillation_time_elapsed = 0.0
 
-var ui = null
 
 func _ready() -> void:
-	InstanceManager.player = self
+	Globals.player = self
 	
 	Event.connect( "crafting_started", self, "crafting_menu_close" )
 	Event.connect( "crafting_close_pressed", self, "crafting_menu_close")
-		
-	self.ui = InstanceManager.ui
-	self.ui.inventory.owning_player = self
+	
+	Globals.ui.inventory.owning_player = self
+
 
 func _process( delta: float ) -> void:
 	self.handle_movement( delta )
@@ -35,28 +32,29 @@ func _process( delta: float ) -> void:
 	$shadow.rect_size.x = self.shadow_size - offset * 6.0
 	$shadow.rect_position.x = -self.shadow_size * 0.5 + offset * 3.0
 
+
 func can_pickup( pickup ) -> bool:
-	return self.ui.inventory.can_pickup( pickup )
+	return Globals.ui.inventory.can_pickup( pickup )
 
 
 func crafting_menu_open( crafting_area ) -> void:
 	if crafting_area.state == CraftingArea.states.adding:
 		self.can_move = false
 		self.focused_crafting_area = crafting_area
-		self.focused_crafting_area.crafting_menu = self.ui.crafting_menu
+		self.focused_crafting_area.crafting_menu = Globals.ui.crafting_menu
 		self.focused_crafting_area.update_ui()
-		self.ui.inventory.focused_crafting_area = crafting_area
-		self.ui.inventory.crafting_menu = self.ui.crafting_menu
-		self.ui.crafting_menu.focused_crafting_area = crafting_area
-		self.ui.crafting_menu.visible = true
+		Globals.ui.inventory.focused_crafting_area = crafting_area
+		Globals.ui.inventory.crafting_menu = Globals.ui.crafting_menu
+		Globals.ui.crafting_menu.focused_crafting_area = crafting_area
+		Globals.ui.crafting_menu.visible = true
 
 
 func crafting_menu_close() -> void:
 	self.can_move = true
 	self.focused_crafting_area = null
-	self.ui.inventory.focused_crafting_area = null
-	self.ui.crafting_menu.focused_crafting_area = null
-	self.ui.crafting_menu.visible = false
+	Globals.ui.inventory.focused_crafting_area = null
+	Globals.ui.crafting_menu.focused_crafting_area = null
+	Globals.ui.crafting_menu.visible = false
 	
 
 func handle_movement( delta: float ) -> void:
@@ -78,7 +76,9 @@ func handle_movement( delta: float ) -> void:
 	elif direction.x > 0:
 		$sprite.scale.x = -1
 	
-	var collision = self.move_and_collide( direction * self.speed * delta )
+	var collision = self.move_and_collide( 
+		direction * Globals.PLAYER_SPEED * delta 
+	)
 	if !collision: 
 		return
 

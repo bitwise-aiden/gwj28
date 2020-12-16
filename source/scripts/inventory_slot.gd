@@ -6,7 +6,6 @@ export ( int ) var inventory_index = 0
 
 func _ready() -> void:
 	self.add_to_group( "inventory_slot" )
-		
 
 
 func has_point( point: Vector2 ):

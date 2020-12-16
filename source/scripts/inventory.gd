@@ -68,7 +68,6 @@ class InventorySlot:
 
 var coin_count = 0
 
-var max_inventory_size = 10
 var inventory_slots = []
 
 var selected_inventory_slot = null
@@ -86,7 +85,7 @@ func _ready() -> void:
 	Event.connect( "pick_up_coin", self, "pick_up_coin" )
 	Event.connect( "pick_up_item", self, "pick_up_item" )
 	
-	for display_slot in $slots.get_children() :
+	for display_slot in $slots.get_children():
 		inventory_slots.append( InventorySlot.new( display_slot ) )
 
 
@@ -171,7 +170,7 @@ func unselect_slot():
 					0.0 
 				).rotated( randf() * TAU )
 				var drop_position =  base_drop_position + random_offset
-				PickupSpawner.spawn( 
+				Globals.spawn_pickup( 
 					self.selected_inventory_slot.pickup_resource, 
 					drop_position, 
 					true 
