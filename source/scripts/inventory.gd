@@ -18,8 +18,7 @@ class InventorySlot:
 		self.pickup_resource = pickup
 		self.quantity = 1
 		
-		self.display.set_texture( pickup.texture )
-		self.display.set_quantity( self.quantity )
+		self.unselect()
 	
 	
 	func increment_quantity( update_display: int = true ):
@@ -80,6 +79,8 @@ var just_released = false
 var focused_crafting_area = null
 onready var crafting_menu = null
 
+var owning_player = null
+
 
 func _ready() -> void:
 	Event.connect( "pick_up_coin", self, "pick_up_coin" )
@@ -91,7 +92,30 @@ func _ready() -> void:
 
 func _process( delta: float ) -> void:
 	self.handle_selected_slot()
+	
+	var mouse_position = self.get_global_mouse_position()
+	
+	for slot in self.inventory_slots:
+		if !slot.is_empty() && slot.display.has_point( mouse_position ):
+			$name_hint.visible = true
+			$name_hint/name.text = slot.pickup_resource.name
+			
+			$name_hint/name.rect_size = Vector2( 0.0, 0.0 )
+			$name_hint.rect_size = $name_hint/name.rect_size + Vector2( 10.0, 10.0 )
+			var offset = Vector2( $name_hint.rect_size.x * -0.5, 20.0 )
+			$name_hint.rect_global_position = mouse_position + offset
+			return
+	
+	$name_hint.visible = false
 
+
+func can_pickup( pickup ) -> bool:
+	for i in range( self.inventory_slots.size() ):
+		if self.inventory_slots[ i ].is_empty() || \
+			self.inventory_slots[ i ].pickup_resource.name == pickup.name:
+			return true
+	return false
+	
 
 func handle_selected_slot() -> void:
 	$selected_item.global_position = self.get_global_mouse_position()
@@ -128,13 +152,31 @@ func unselect_slot():
 	if self.selected_inventory_slot == null:
 		return
 		
-	if !self.drop_in_crafting_area():
+	if !self.drop_in_order_area() && !self.drop_in_crafting_area():
 		var hovered_inventory_slot = self.find_hovered_slot()
 		
 		if hovered_inventory_slot:
 			self.selected_inventory_slot.swap( 
 				hovered_inventory_slot
 			)
+		else: 
+			var mouse_position = self.get_global_mouse_position()
+			var owner_position = self.owning_player.global_position
+			var mouse_direction = (mouse_position - owner_position).normalized()
+			var base_drop_position = owner_position + mouse_direction * 50.0 
+			
+			for i in range( self.selected_inventory_slot.quantity ):
+				var random_offset = Vector2( 
+					randf() * 15.0, 
+					0.0 
+				).rotated( randf() * TAU )
+				var drop_position =  base_drop_position + random_offset
+				PickupSpawner.spawn( 
+					self.selected_inventory_slot.pickup_resource, 
+					drop_position, 
+					true 
+				)
+				self.selected_inventory_slot.decrement_quantity()
 	
 	self.selected_inventory_slot.unselect()
 	
@@ -143,6 +185,9 @@ func unselect_slot():
 
 
 func drop_in_crafting_area():
+	if !self.selected_inventory_slot.pickup_resource.craftable:
+		return false
+	
 	if !self.focused_crafting_area:
 		return false
 	
@@ -154,6 +199,31 @@ func drop_in_crafting_area():
 			self.selected_inventory_slot.pickup_resource ):
 		return false 
 
+	self.selected_inventory_slot.decrement_quantity()
+	
+	return true
+
+
+func drop_in_order_area() -> bool:
+	var pickup = self.selected_inventory_slot.pickup_resource
+	if !pickup.orderable:
+		return false
+	
+	var hovered_order_area = null
+	var mouse_position = self.get_global_mouse_position()
+	
+	for order in self.get_tree().get_nodes_in_group( "order_area" ):
+		if order.has_point( mouse_position ):
+			hovered_order_area = order
+			break
+	
+	if !hovered_order_area:
+		return false
+	
+	if !hovered_order_area.is_waiting():
+		return false
+	
+	hovered_order_area.fulfill_order( pickup )
 	self.selected_inventory_slot.decrement_quantity()
 	
 	return true

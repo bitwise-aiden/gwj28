@@ -5,8 +5,10 @@
 
 [resource]
 script = ExtResource( 1 )
+craftable = true
 method = "pick_up_item"
 name = "Egg"
+orderable = false
 quantity = 1
 radius = 64.0
 texture = ExtResource( 2 )

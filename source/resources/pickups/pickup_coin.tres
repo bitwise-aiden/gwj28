@@ -5,8 +5,10 @@
 
 [resource]
 script = ExtResource( 2 )
+craftable = false
 method = "pick_up_item"
 name = "Coin"
+orderable = false
 quantity = 1
 radius = 64.0
 texture = ExtResource( 1 )

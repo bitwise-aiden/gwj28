@@ -16,6 +16,7 @@ var target = null
 
 onready var shadow_size = $shadow.rect_size.x
 
+var drop_cooldown = 0.0
 
 func _ready() -> void:
 	if self.pickup_resource == null:
@@ -29,7 +30,14 @@ func _ready() -> void:
 
 
 func _process( delta: float ) -> void:
-	if target:
+	if self.drop_cooldown > 0.0:
+		self.drop_cooldown = max( 0.0, self.drop_cooldown - delta )
+	
+	if (
+		self.drop_cooldown == 0.0 && 
+		self.target && 
+		self.target.can_pickup( self.pickup_resource )
+	):
 		self.time_elapsed = min( 
 			self.time_elapsed + delta, 
 			self.acceleration_time 
@@ -54,11 +62,17 @@ func _process( delta: float ) -> void:
 		self.oscillation_time_elapsed += delta * 5.0
 		$sprite.position.y = sin( self.oscillation_time_elapsed ) * 2.0
 		
-		var offset = sin( self.oscillation_time_elapsed ) * 0.5 + 0.5
+		var offset = sin( -self.oscillation_time_elapsed ) * 0.5 + 0.5
 		
 		$shadow.rect_size.x = self.shadow_size - offset * 6.0
 		$shadow.rect_position.x = -self.shadow_size * 0.5 + offset * 3.0
 
+
 func _on_body_entered( body ):
 	if body is Player:
 		self.target = body
+
+
+func _on_body_exited(body):
+	if body == self.target:
+		self.target = null

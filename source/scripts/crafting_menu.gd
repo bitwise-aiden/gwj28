@@ -20,3 +20,7 @@ func update_ui( items ):
 
 func _on_start_pressed():
 	self.focused_crafting_area.start_cooking()
+
+
+func _on_close_pressed():
+	Event.emit_signal( "crafting_close_pressed" )

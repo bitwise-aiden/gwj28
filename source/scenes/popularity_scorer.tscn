@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://source/scripts/popularity_scorer.gd" type="Script" id=1]
+
+[node name="popularity_scorer" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="popularity" type="Label" parent="."]
+margin_left = 93.4434
+margin_top = 35.3952
+margin_right = 133.443
+margin_bottom = 49.3952
+text = "Popularity: 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}

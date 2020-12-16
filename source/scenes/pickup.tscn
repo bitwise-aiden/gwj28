@@ -18,8 +18,9 @@ shape = SubResource( 1 )
 [node name="shadow" type="ColorRect" parent="."]
 margin_left = -10.0
 margin_top = 2.0
-margin_right = 10.0
+margin_right = 6.0
 margin_bottom = 4.0
+mouse_filter = 2
 color = Color( 0, 0, 0, 0.392157 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -28,3 +29,4 @@ __meta__ = {
 [node name="sprite" type="Sprite" parent="."]
 offset = Vector2( 0, -16 )
 [connection signal="body_entered" from="area" to="." method="_on_body_entered"]
+[connection signal="body_exited" from="area" to="." method="_on_body_exited"]

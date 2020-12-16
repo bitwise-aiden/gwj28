@@ -59,6 +59,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://tools/scripts/player_input.gd"
 }, {
+"base": "Node",
+"class": "PopularityScorer",
+"language": "GDScript",
+"path": "res://source/scripts/popularity_scorer.gd"
+}, {
 "base": "Reference",
 "class": "Task",
 "language": "GDScript",
@@ -85,6 +90,7 @@ _global_script_class_icons={
 "PickupResource": "",
 "Player": "",
 "PlayerInput": "",
+"PopularityScorer": "",
 "Task": "",
 "TaskQueue": "",
 "chicken": ""
@@ -99,6 +105,9 @@ config/icon="res://icon.png"
 [autoload]
 
 Event="*res://source/scripts/event.gd"
+PickupSpawner="*res://source/scripts/pickup_spawner.gd"
+DayCycle="*res://source/scripts/day_cycle.gd"
+InstanceManager="*res://source/scripts/instance_manager.gd"
 
 [importer_defaults]
 
