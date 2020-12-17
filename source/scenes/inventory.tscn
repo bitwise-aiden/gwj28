@@ -1,14 +1,17 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://source/scripts/inventory.gd" type="Script" id=1]
 [ext_resource path="res://source/scenes/inventory_slot.tscn" type="PackedScene" id=2]
 [ext_resource path="res://source/assets/inventory_hover.png" type="Texture" id=3]
+[ext_resource path="res://source/assets/coin.png" type="Texture" id=4]
 
 [node name="inventory" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -0.943878
-margin_bottom = -0.943848
+margin_left = 0.890961
+margin_top = 0.392471
+margin_right = 0.890991
+margin_bottom = 0.392456
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -70,6 +73,20 @@ margin_bottom = 19.0
 size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "Egg"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="coin" type="Sprite" parent="."]
+position = Vector2( 358.987, 99.61 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 4 )
+
+[node name="coins" type="Label" parent="."]
+margin_left = 370.168
+margin_top = 92.6535
+margin_right = 410.168
+margin_bottom = 106.653
 __meta__ = {
 "_edit_use_anchors_": false
 }

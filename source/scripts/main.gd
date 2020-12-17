@@ -12,9 +12,12 @@ func _process( delta: float ) -> void:
 
 		for i in range( 10 ):
 			Event.emit_signal( "pick_up_item", Globals.RESOURCE_EGG.duplicate() )
+			
+		for i in range( 10 ):
+			Event.emit_signal( "pick_up_item", Globals.RESOURCE_BACON.duplicate() )
 
 		for i in range( 10 ):
-			Event.emit_signal( "pick_up_item", Globals.RESOURCE_COIN.duplicate() )
+			Event.emit_signal( "pick_up_coin", Globals.RESOURCE_COIN.duplicate() )
 			
 
 		for i in range( 30 ):

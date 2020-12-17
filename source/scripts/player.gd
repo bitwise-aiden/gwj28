@@ -14,6 +14,7 @@ func _ready() -> void:
 	
 	Event.connect( "crafting_started", self, "crafting_menu_close" )
 	Event.connect( "crafting_close_pressed", self, "crafting_menu_close")
+	Event.connect( "shop_close_pressed", self, "shop_close" )
 	
 	Globals.ui.inventory.owning_player = self
 
@@ -21,8 +22,9 @@ func _ready() -> void:
 func _process( delta: float ) -> void:
 	self.handle_movement( delta )
 	
-	if self.focused_crafting_area && Input.is_action_just_pressed( "ui_cancel" ):
+	if Input.is_action_just_pressed( "ui_cancel" ):
 		self.crafting_menu_close()
+		self.shop_close()
 	
 	self.oscillation_time_elapsed += delta * 5.0
 	$sprite.position.y = sin( self.oscillation_time_elapsed ) * 2.0
@@ -55,7 +57,18 @@ func crafting_menu_close() -> void:
 	Globals.ui.inventory.focused_crafting_area = null
 	Globals.ui.crafting_menu.focused_crafting_area = null
 	Globals.ui.crafting_menu.visible = false
-	
+
+
+func shop_open() -> void:
+	self.can_move = false
+	Globals.ui.shop_menu.visible = true
+	Globals.ui.shop_menu.update_shop_display()
+
+
+func shop_close() -> void:
+	self.can_move = true
+	Globals.ui.shop_menu.visible = false
+
 
 func handle_movement( delta: float ) -> void:
 	if !can_move:
@@ -84,3 +97,6 @@ func handle_movement( delta: float ) -> void:
 
 	if collision.collider is CraftingArea:
 		self.crafting_menu_open( collision.collider )
+
+	if collision.collider is Shop:
+		self.shop_open()

@@ -7,13 +7,17 @@ export (Array, Resource) var optional_ingredients = []
 onready var order_displays = self.get_children()
 
 var orders = []
+var order_creation_time_out = 0.0
 
 
 func _process( delta: float ) -> void:
 	var number_of_orders = self.orders.size()
 	
-	if Globals.ORDER_MAX_ORDERS > self.orders.size():
-		if randi() % Globals.ORDER_CREATION_CHANCE == 0:
+	if Globals.ORDER_MAX_ORDERS > self.orders.size() :
+		self.order_creation_time_out = max( 0.0, self.order_creation_time_out - delta )
+		
+		if randi() % Globals.ORDER_CREATION_CHANCE == 0 || \
+			self.order_creation_time_out == 0.0:
 			var ingredients = self.required_ingredients.duplicate()
 			
 			for i in range( Globals.ORDER_MAX_SIZE - self.orders.size() ):
@@ -22,7 +26,8 @@ func _process( delta: float ) -> void:
 					ingredients.append( 
 						self.optional_ingredients[ ingredient ] 
 					)
-					
+			
+			self.order_creation_time_out = Globals.ORDER_CREATION_TIME_OUT
 			orders.append( Order.new( ingredients ) )
 	
 	var marked_for_removal = []

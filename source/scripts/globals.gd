@@ -11,14 +11,16 @@ const CHICKEN_SPEED_MODIFER_MAX = 3.0
 # Crafting globals
 const CRAFTING_AUTO_START = true
 const CRAFTING_COOKING_TIME = 3.0
-const CRAFTING_MAX_SIZE = 5
+const CRAFTING_MAX_SIZE = 3
 
 
 # Instances
 var camera = null
+var inventory = null
 var main = null
 var player = null
 var popularity_scorer = null
+var shop = null
 var ui = null
 
 
@@ -32,10 +34,12 @@ const KITCHEN_Y_LEVEL = 300
 
 # Order globals
 const ORDER_CREATION_CHANCE = 2500
+const ORDER_CREATION_TIME_OUT = 5.0
 const ORDER_MAX_ORDERS = 3
 const ORDER_MAX_SIZE = 3
 const ORDER_MAX_WAIT_TIME = 30.0
 const ORDER_POPULARITY_MULTIPLIER = 10
+const ORDER_PRICE_MULTIPLIER = 1
 const ORDER_SCORE_CORRECT_ITEM = 2
 const ORDER_SCORE_EXTRA_ITEM = -1
 const ORDER_SCORE_MISSING_ITEM = -1
@@ -57,6 +61,7 @@ const POPULARITY_MULTIPLIER = 1.0
 
 
 # Resource globals
+var RESOURCE_BACON = load( "res://source/resources/pickups/pickup_bacon.tres" )
 var RESOURCE_COIN = load( "res://source/resources/pickups/pickup_coin.tres" )
 var RESOURCE_EGG = load( "res://source/resources/pickups/pickup_egg.tres" )
 var RESOURCE_OMELETTE = load( "res://source/resources/pickups/pickup_omelette.tres" )

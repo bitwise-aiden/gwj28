@@ -1,15 +1,15 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://source/resources/pickups/pickup_resource.gd" type="Script" id=1]
-[ext_resource path="res://source/assets/egg.png" type="Texture" id=2]
+[ext_resource path="res://source/assets/cheese.png" type="Texture" id=2]
 
 [resource]
 script = ExtResource( 1 )
 craftable = true
 method = "pick_up_item"
-name = "Egg"
+name = "Cheese"
 orderable = false
 price = 1
 quantity = 1
-radius = 64.0
+radius = 16.0
 texture = ExtResource( 2 )

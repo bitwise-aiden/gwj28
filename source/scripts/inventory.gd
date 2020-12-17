@@ -82,11 +82,15 @@ var owning_player = null
 
 
 func _ready() -> void:
+	Globals.inventory = self
+	
 	Event.connect( "pick_up_coin", self, "pick_up_coin" )
 	Event.connect( "pick_up_item", self, "pick_up_item" )
 	
 	for display_slot in $slots.get_children():
 		inventory_slots.append( InventorySlot.new( display_slot ) )
+	
+	$coins.text = "%d" % [ self.coin_count ]
 
 
 func _process( delta: float ) -> void:
@@ -106,6 +110,18 @@ func _process( delta: float ) -> void:
 			return
 	
 	$name_hint.visible = false
+
+
+func buy( amount: int ) -> bool:
+	if self.coin_count >= amount:
+		self.coin_count -= amount
+		$coins.text = "%d" % [ self.coin_count ]
+		return true
+	return false
+
+
+func can_buy( amount: int ) -> bool:
+	return self.coin_count >= amount
 
 
 func can_pickup( pickup ) -> bool:
@@ -231,6 +247,7 @@ func drop_in_order_area() -> bool:
 
 func pick_up_coin( pickup ) -> void:
 	self.coin_count += pickup.quantity
+	$coins.text = "%d" % [ self.coin_count ]
 
 
 func pick_up_item( pickup ) -> void:

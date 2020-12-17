@@ -59,4 +59,9 @@ func fulfill_order( order: Resource ) -> void:
 	
 	self.fulfilled = true
 	Event.emit_signal( "order_fulfilled", total_score )
+	
+	var coin = Globals.RESOURCE_COIN.duplicate()
+	coin.quantity = self.ingredients.size() * Globals.ORDER_PRICE_MULTIPLIER
+	
+	Event.emit_signal( "pick_up_coin", coin )
 

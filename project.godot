@@ -69,6 +69,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://source/scripts/popularity_scorer.gd"
 }, {
+"base": "StaticBody2D",
+"class": "Shop",
+"language": "GDScript",
+"path": "res://source/scripts/shop.gd"
+}, {
 "base": "Reference",
 "class": "Task",
 "language": "GDScript",
@@ -97,6 +102,7 @@ _global_script_class_icons={
 "Player": "",
 "PlayerInput": "",
 "PopularityScorer": "",
+"Shop": "",
 "Task": "",
 "TaskQueue": "",
 "chicken": ""
