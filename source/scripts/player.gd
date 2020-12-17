@@ -73,13 +73,21 @@ func shop_close() -> void:
 func handle_movement( delta: float ) -> void:
 	if !can_move:
 		return
+	var start_position = self.position 
 	
-	var direction = Vector2(
+	var movement_horizontal = Vector2(
 		Input.get_action_strength( "right" ) -
 		Input.get_action_strength( "left" ),
+		0.0
+	)
+	
+	var movement_vertical = Vector2(
+		0.0,
 		Input.get_action_strength( "down" ) -
 		Input.get_action_strength( "up" )
-	).normalized()
+	)
+	
+	var direction = ( movement_vertical + movement_horizontal ).normalized()
 	
 	if direction.length() == 0.0:
 		return
@@ -88,15 +96,46 @@ func handle_movement( delta: float ) -> void:
 		$sprite.scale.x = 1
 	elif direction.x > 0:
 		$sprite.scale.x = -1
+		
+	var movement_offset = direction * Globals.PLAYER_SPEED * delta
 	
 	var collision = self.move_and_collide( 
-		direction * Globals.PLAYER_SPEED * delta 
+		 movement_offset
 	)
 	if !collision: 
 		return
 
 	if collision.collider is CraftingArea:
 		self.crafting_menu_open( collision.collider )
+		return
 
 	if collision.collider is Shop:
 		self.shop_open()
+		return
+
+	# If moving on horizontal and vertical
+	if movement_horizontal.length() && movement_vertical.length():
+		# Calculate vector from start of frame position
+		var direction_delta = (self.position - start_position)
+		# If distance is less than intended movement 
+		if movement_offset.length() > direction_delta.length():
+			# Calculate how much movement should remain
+			var remaining_amount = movement_offset.length() - direction_delta.length()
+			# Determine direction remaining should be in
+			var remaining_direction = movement_horizontal
+			if collision.normal == -movement_horizontal:
+				remaining_direction = movement_vertical
+			
+			# Proceed to move
+			collision = self.move_and_collide( remaining_direction * remaining_amount )
+	
+	if !collision: 
+		return
+	
+	if collision.collider is CraftingArea:
+		self.crafting_menu_open( collision.collider )
+		return
+
+	if collision.collider is Shop:
+		self.shop_open()
+		return
