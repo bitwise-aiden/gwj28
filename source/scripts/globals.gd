@@ -22,6 +22,7 @@ var player = null
 var popularity_scorer = null
 var shop = null
 var ui = null
+var input_type = "keyboard"
 
 
 # Inventory globals
@@ -51,6 +52,7 @@ const ORDER_WAIT_TIME_GRACE_PERIOD = 5.0
 
 # Player globals
 const PLAYER_SPEED = 400.0
+const PLAYER_OPEN_WHEN_COLLIDING = false
 
 
 # Pickup globals
@@ -81,6 +83,14 @@ const SCREEN_WIDTH = 1024
 
 # Star globals
 const STAR_MAX_SPEED = 10
+
+
+func is_keyboard(): 
+	return self.input_type == "keyboard"
+
+
+func is_controller(): 
+	return self.input_type == "controller"
 
 
 func is_in_kitchen( position: Vector2 ):

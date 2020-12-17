@@ -65,7 +65,6 @@ class InventorySlot:
 		self.quantity = new_quantity
 		self.unselect()
 
-
 var coin_count = 0
 
 var inventory_slots = []
@@ -79,6 +78,8 @@ var focused_crafting_area = null
 onready var crafting_menu = null
 
 var owning_player = null
+
+var controller_selected_slot = 0
 
 
 func _ready() -> void:
@@ -110,6 +111,24 @@ func _process( delta: float ) -> void:
 			return
 	
 	$name_hint.visible = false
+	
+	for i in range( 5 ):
+		if Input.is_action_just_pressed( String( i + 1 ) ):
+			self.add_item_to_crafting_area( i )
+	
+	
+	if !Globals.ui.shop_menu.visible:
+		if Globals.is_controller() && \
+				Input.is_action_just_pressed( "ui_accept" ):
+			self.add_item_to_crafting_area( self.controller_selected_slot )
+		
+		if Input.is_action_just_pressed( "scroll_left" ):
+			self.controller_selected_slot = ( 5 + self.controller_selected_slot - 1 ) % 5
+			self.update_controller_ui()
+		
+		if Input.is_action_just_pressed( "scroll_right" ):
+			self.controller_selected_slot = ( self.controller_selected_slot + 1 ) % 5
+			self.update_controller_ui()
 
 
 func buy( amount: int ) -> bool:
@@ -245,6 +264,26 @@ func drop_in_order_area() -> bool:
 	return true
 
 
+func add_item_to_crafting_area( slot_index: int ) -> void:
+	if !self.focused_crafting_area:
+		return
+	
+	var slot = self.inventory_slots[ slot_index ]
+	
+	if slot.is_empty():
+		return 
+	
+	var pickup = slot.pickup_resource
+	
+	if !pickup.craftable:
+		return
+	
+	if !self.focused_crafting_area.add_item( pickup ):
+		return 
+	
+	slot.decrement_quantity()
+
+
 func pick_up_coin( pickup ) -> void:
 	self.coin_count += pickup.quantity
 	$coins.text = "%d" % [ self.coin_count ]
@@ -265,3 +304,10 @@ func pick_up_item( pickup ) -> void:
 	
 	if empty_index != -1:
 		self.inventory_slots[ empty_index ].add_pickup( pickup )
+
+func update_controller_ui():
+	for i in range( self.inventory_slots.size() ):
+		if self.controller_selected_slot == i: 
+			self.inventory_slots[ i ].display.modulate = Color.white
+		else:
+			self.inventory_slots[ i ].display.modulate = Color("b0b0b0")

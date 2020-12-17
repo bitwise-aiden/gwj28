@@ -9,6 +9,7 @@ craftable = false
 method = "pick_up_item"
 name = "Omelette"
 orderable = true
+price = 1
 quantity = 1
 radius = 32.0
 texture = ExtResource( 2 )

@@ -17,3 +17,11 @@ func update_shop_display():
 
 func _on_close_pressed():
 	Event.emit_signal( "shop_close_pressed" )
+
+
+func update_controller_ui( index ):
+	for i in range( self.items.size() ):
+		if index == i: 
+			self.items[ i ].modulate = Color.white
+		else:
+			self.items[ i ].modulate = Color("b0b0b0")

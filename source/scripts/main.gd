@@ -4,6 +4,20 @@ extends YSort
 
 func _ready() -> void:
 	randomize()
+	
+
+func _input( event ):
+	var previous = Globals.input_type
+	
+	if event is InputEventMouseMotion || event is InputEventKey:
+		Globals.input_type = "keyboard"
+	
+	if event is InputEventJoypadButton || event is InputEventJoypadMotion:
+		Globals.input_type = "controller"
+	
+	if previous != Globals.input_type:
+		print( "Controls changed to %s" % [ Globals.input_type ] )
+		Event.emit_signal( "input_type_changed" )
 
 
 func _process( delta: float ) -> void:
@@ -27,4 +41,5 @@ func _process( delta: float ) -> void:
 			dup.metadata[ "items" ][ "Egg" ] = int( i / 10 ) + 1
 
 			Event.emit_signal( "pick_up_item", dup )
+			
 
