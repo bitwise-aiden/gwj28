@@ -39,6 +39,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://source/scripts/main.gd"
 }, {
+"base": "Reference",
+"class": "Order",
+"language": "GDScript",
+"path": "res://source/scripts/order.gd"
+}, {
 "base": "Node2D",
 "class": "Pickup",
 "language": "GDScript",
@@ -86,6 +91,7 @@ _global_script_class_icons={
 "Grass": "",
 "Inventory": "",
 "Main": "",
+"Order": "",
 "Pickup": "",
 "PickupResource": "",
 "Player": "",

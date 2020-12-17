@@ -86,7 +86,7 @@ func _on_animation_finished():
 			self.set_state( states.wandering )
 			
 			if randi() % Globals.CHICKEN_SPAWN_COIN_CHANCE == 0:
-				var position = self.positionposition + self.direction * 20.0
+				var position = self.position + self.direction * 20.0
 				Globals.spawn_pickup( Globals.RESOURCE_COIN, position )
 		states.laying:
 			self.set_state( states.wandering )

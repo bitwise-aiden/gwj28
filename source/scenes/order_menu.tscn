@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://source/scripts/order_menu.gd" type="Script" id=1]
+[ext_resource path="res://source/resources/pickups/pickup_egg.tres" type="Resource" id=2]
+[ext_resource path="res://source/scenes/order_display.tscn" type="PackedScene" id=3]
+
+[node name="order_menu" type="VBoxContainer"]
+margin_left = 161.109
+margin_top = 100.0
+margin_right = 265.109
+margin_bottom = 396.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+required_ingredients = [ ExtResource( 2 ) ]
+optional_ingredients = [ ExtResource( 2 ) ]
+
+[node name="order_display_0" parent="." instance=ExtResource( 3 )]
+visible = false
+margin_right = 104.0
+margin_bottom = 56.0
+
+[node name="order_display_1" parent="." instance=ExtResource( 3 )]
+visible = false
+margin_right = 104.0
+margin_bottom = 56.0
+
+[node name="order_display_2" parent="." instance=ExtResource( 3 )]
+visible = false
+margin_right = 104.0
+margin_bottom = 56.0
+
+[node name="order_display_3" parent="." instance=ExtResource( 3 )]
+visible = false
+margin_right = 104.0
+margin_bottom = 56.0
+
+[node name="order_display_4" parent="." instance=ExtResource( 3 )]
+visible = false
+margin_right = 104.0
+margin_bottom = 56.0

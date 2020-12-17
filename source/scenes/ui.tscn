@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://source/scenes/inventory.tscn" type="PackedScene" id=1]
 [ext_resource path="res://source/scenes/crafting_menu.tscn" type="PackedScene" id=2]
 [ext_resource path="res://source/scenes/popularity_scorer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://source/scripts/ui.gd" type="Script" id=4]
+[ext_resource path="res://source/scenes/order_menu.tscn" type="PackedScene" id=5]
 
 [node name="ui" type="Control"]
 margin_left = -512.0
@@ -26,3 +27,5 @@ margin_bottom = 600.0
 visible = false
 
 [node name="popularity_scorer" parent="." instance=ExtResource( 3 )]
+
+[node name="order_menu" parent="." instance=ExtResource( 5 )]

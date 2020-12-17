@@ -151,6 +151,8 @@ func unselect_slot():
 	if self.selected_inventory_slot == null:
 		return
 		
+	var mouse_position = Globals.main.get_local_mouse_position()
+		
 	if !self.drop_in_order_area() && !self.drop_in_crafting_area():
 		var hovered_inventory_slot = self.find_hovered_slot()
 		
@@ -158,9 +160,8 @@ func unselect_slot():
 			self.selected_inventory_slot.swap( 
 				hovered_inventory_slot
 			)
-		else: 
-			var mouse_position = self.get_global_mouse_position()
-			var owner_position = self.owning_player.global_position
+		elif Globals.main.has_point( mouse_position ): 
+			var owner_position = self.owning_player.position
 			var mouse_direction = (mouse_position - owner_position).normalized()
 			var base_drop_position = owner_position + mouse_direction * 50.0 
 			

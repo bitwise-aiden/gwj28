@@ -27,6 +27,7 @@ __meta__ = {
 }
 
 [node name="sprite" type="Sprite" parent="."]
+z_index = 1
 offset = Vector2( 0, -16 )
 [connection signal="body_entered" from="area" to="." method="_on_body_entered"]
 [connection signal="body_exited" from="area" to="." method="_on_body_exited"]
