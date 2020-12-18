@@ -6,8 +6,12 @@ export (Array, Resource) var optional_ingredients = []
 
 onready var order_displays = self.get_children()
 
+var order_index = 1000
 var orders = []
 var order_creation_time_out = 0.0
+
+func _ready() -> void:
+	Globals.order_menu = self
 
 
 func _process( delta: float ) -> void:
@@ -45,7 +49,8 @@ func _process( delta: float ) -> void:
 					)
 			
 			self.order_creation_time_out = Globals.ORDER_CREATION_TIME_OUT
-			orders.append( Order.new( ingredients ) )
+			self.order_index += 1
+			orders.append( Order.new( self.order_index, ingredients ) )
 	
 	var marked_for_removal = []
 	for index in range( self.orders.size() ):
@@ -63,3 +68,11 @@ func _process( delta: float ) -> void:
 				self.order_displays[ index ].set_order( self.orders[ index ] )
 			else: 
 				self.order_displays[ index ].set_order()
+
+
+func get_order_for_pickup() -> Order:
+	for order in self.orders:
+		if order.order_pickup == null:
+			return order
+	
+	return null

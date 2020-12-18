@@ -8,10 +8,10 @@
 [node name="inventory" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 0.890961
-margin_top = 0.392471
-margin_right = 0.890991
-margin_bottom = 0.392456
+margin_left = 12.1905
+margin_top = 4.07139
+margin_right = 12.1904
+margin_bottom = 4.07141
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false

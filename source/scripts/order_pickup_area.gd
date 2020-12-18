@@ -2,16 +2,40 @@ class_name OrderPickupArea
 extends StaticBody2D
 
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var order_pickup_arrived = false
+var order = null
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	self.add_to_group( "order_pickup_area" )
+	self.modulate = Color.gray
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func fulfill_order( item: Resource ) -> void:
+	self.order.fulfill_order( item )
+
+
+func has_order() -> bool:
+	return !!self.order
+
+
+func has_point( point: Vector2 ) -> bool:
+	var rect = Rect2(
+		self.position - $collision.shape.extents,
+		$collision.shape.extents * 2.0
+	)
+	
+	return rect.has_point( point )
+
+
+func is_waiting() -> bool:
+	return self.order_pickup_arrived
+
+
+func order_complete() -> bool:
+	return self.order.fulfilled
+
+
+func set_order( incoming_order ) -> void:
+	self.order_pickup_arrived = false
+	self.order = incoming_order

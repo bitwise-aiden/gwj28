@@ -1,10 +1,16 @@
 class_name Order
 
+var id = 0
+
 var fulfilled = false
 var ingredients = []
 var wait_time_remaining = 0.0
 
-func _init( ingredients: Array ) -> void:
+var order_pickup = null
+
+
+func _init( id: int, ingredients: Array ) -> void:
+	self.id = id
 	self.ingredients = ingredients
 	self.wait_time_remaining = (
 		Globals.ORDER_MAX_WAIT_TIME + 
@@ -17,7 +23,7 @@ func process( delta: float ) -> bool:
 
 	if self.wait_time_remaining == 0.0:
 		Event.emit_signal( "order_fulfilled", 1 )
-		return true
+		self.fulfilled = true
 	
 	return self.fulfilled
 

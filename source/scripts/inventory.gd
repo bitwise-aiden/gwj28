@@ -31,6 +31,8 @@ class InventorySlot:
 		if self.quantity <= 0:
 			self.pickup_resource = null
 			self.select()
+		else:
+			self.unselect()
 			
 	
 	func is_empty():
@@ -77,6 +79,8 @@ var just_released = false
 var focused_crafting_area = null
 onready var crafting_menu = null
 
+var focused_order_area = null
+
 var owning_player = null
 
 var controller_selected_slot = 0
@@ -115,12 +119,14 @@ func _process( delta: float ) -> void:
 	for i in range( 5 ):
 		if Input.is_action_just_pressed( String( i + 1 ) ):
 			self.add_item_to_crafting_area( i )
-	
+			self.add_item_to_order_area( i )
+			break 
 	
 	if !Globals.ui.shop_menu.visible:
 		if Globals.is_controller() && \
 				Input.is_action_just_pressed( "ui_accept" ):
 			self.add_item_to_crafting_area( self.controller_selected_slot )
+			self.add_item_to_order_area( self.controller_selected_slot )
 		
 		if Input.is_action_just_pressed( "scroll_left" ):
 			self.controller_selected_slot = ( 5 + self.controller_selected_slot - 1 ) % 5
@@ -245,9 +251,9 @@ func drop_in_order_area() -> bool:
 		return false
 	
 	var hovered_order_area = null
-	var mouse_position = self.get_global_mouse_position()
+	var mouse_position = self.get_parent().get_local_mouse_position()
 	
-	for order in self.get_tree().get_nodes_in_group( "order_area" ):
+	for order in self.get_tree().get_nodes_in_group( "order_pickup_area" ):
 		if order.has_point( mouse_position ):
 			hovered_order_area = order
 			break
@@ -268,12 +274,13 @@ func add_item_to_crafting_area( slot_index: int ) -> void:
 	if !self.focused_crafting_area:
 		return
 	
+	
 	var slot = self.inventory_slots[ slot_index ]
 	
-	if slot.is_empty():
+	if self.inventory_slots[ slot_index ].is_empty():
 		return 
 	
-	var pickup = slot.pickup_resource
+	var pickup = self.inventory_slots[ slot_index ].pickup_resource
 	
 	if !pickup.craftable:
 		return
@@ -281,7 +288,28 @@ func add_item_to_crafting_area( slot_index: int ) -> void:
 	if !self.focused_crafting_area.add_item( pickup ):
 		return 
 	
-	slot.decrement_quantity()
+	self.inventory_slots[ slot_index ].decrement_quantity()
+
+
+func add_item_to_order_area( slot_index: int ) -> void:
+	if !self.focused_order_area:
+		return 
+	
+	if !self.focused_order_area.is_waiting():
+		return
+	
+	var slot = self.inventory_slots[ slot_index ]
+	
+	if self.inventory_slots[ slot_index ].is_empty():
+		return 
+	
+	var pickup = self.inventory_slots[ slot_index ].pickup_resource
+	
+	if !pickup.orderable:
+		return
+		
+	self.focused_order_area.fulfill_order( pickup )
+	self.inventory_slots[ slot_index ].decrement_quantity()
 
 
 func pick_up_coin( pickup ) -> void:
@@ -304,6 +332,7 @@ func pick_up_item( pickup ) -> void:
 	
 	if empty_index != -1:
 		self.inventory_slots[ empty_index ].add_pickup( pickup )
+
 
 func update_controller_ui():
 	for i in range( self.inventory_slots.size() ):

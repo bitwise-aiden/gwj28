@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://source/assets/inventory_slot.png" type="Texture" id=1]
+[ext_resource path="res://source/scripts/order_pickup.gd" type="Script" id=2]
+
+[node name="order_pickup" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="order_id" type="Label" parent="."]
+margin_left = -20.0
+margin_top = -30.0
+margin_right = 21.0
+margin_bottom = -16.0
+text = "#1000"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )

@@ -159,6 +159,26 @@ func handle_collision( collision ) -> bool:
 		return true
 	
 	return false
+	
+	
+func update_inventory_order_area() -> void:
+	var min_distance = 10000.0
+	var min_order_area = null
+	
+	var player_position = self.position + Vector2( 0.0, 20.0 )
+	
+	for order_area in self.focused_order_pickup_areas:
+		var distance = ( player_position - order_area.position ).length()
+		if distance < min_distance:
+			min_distance = distance
+			min_order_area = order_area
+		
+		order_area.modulate = Color.gray
+	
+	if min_order_area:
+		min_order_area.modulate = Color.white
+	
+	Globals.ui.inventory.focused_order_area = min_order_area
 
 
 func _on_interaction_area_body_entered(body):
@@ -170,6 +190,7 @@ func _on_interaction_area_body_entered(body):
 		
 	if body is OrderPickupArea:
 		self.focused_order_pickup_areas.append( body )
+		self.update_inventory_order_area()
 
 
 func _on_interaction_area_body_exited(body):
@@ -182,3 +203,6 @@ func _on_interaction_area_body_exited(body):
 	if body is OrderPickupArea:
 		var index = self.focused_order_pickup_areas.find( body )
 		self.focused_order_pickup_areas.remove( index )
+		self.update_inventory_order_area()
+		
+		body.modulate = Color.gray

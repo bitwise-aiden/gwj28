@@ -16,7 +16,6 @@ func _input( event ):
 		Globals.input_type = "controller"
 	
 	if previous != Globals.input_type:
-		print( "Controls changed to %s" % [ Globals.input_type ] )
 		Event.emit_signal( "input_type_changed" )
 
 

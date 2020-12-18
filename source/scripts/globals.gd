@@ -18,6 +18,7 @@ const CRAFTING_MAX_SIZE = 3
 var camera = null
 var inventory = null
 var main = null
+var order_menu = null
 var player = null
 var popularity_scorer = null
 var shop = null

@@ -41,6 +41,8 @@ func set_order( order = null ) -> void:
 func update_display() -> void:
 	if !self.order:
 		return
+		
+	$order_id.text = "#%d" % self.order.id
 	
 	for i in self.items.size():
 		if i < self.order.size():

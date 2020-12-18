@@ -124,6 +124,7 @@ config/icon="res://icon.png"
 
 Event="*res://source/scripts/event.gd"
 Globals="*res://source/scripts/globals.gd"
+TaskManager="*res://tools/scripts/task/task_manager.gd"
 
 [display]
 

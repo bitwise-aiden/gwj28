@@ -57,7 +57,7 @@ class Lerp:
 			self.__elapsed / self.__duration )
 		self.__callback.call_func( variant_delta )
 		
-		if self.__elapsed >= self.__duration:
+		if abs( self.__elapsed - self.__duration ) < 0.001:
 			self._completed = true
 
 
@@ -110,3 +110,18 @@ class WaitForTask:
 	
 	func update( delta: float ) -> void:
 		self._completed = self.__task.is_completed()
+
+
+class WaitForFunc:
+	extends BaseTask
+	
+	
+	var __function: FuncRef
+	
+	
+	func _init( function: FuncRef ):
+		self.__function = function
+	
+	
+	func update( delta: float ) -> void:
+		self._completed = self.__function.call_func()
