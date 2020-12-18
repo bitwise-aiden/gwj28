@@ -43,6 +43,11 @@ func waiting_progress() -> float:
 func fulfill_order( order: Resource ) -> void:
 	var order_items = order.metadata[ "items" ].duplicate()
 	
+	if !"Egg" in order_items:
+		self.fulfilled = true
+		Event.emit_signal( "order_fulfilled", 1 )
+		return
+	
 	var correct_items = 0.0
 	for item in self.ingredients:
 		if item.name in order_items && order_items[ item.name ] > 0:
@@ -53,7 +58,7 @@ func fulfill_order( order: Resource ) -> void:
 		correct_items / self.ingredients.size(), 
 		1.0 
 	)
-	var correctness_score = ceil( correctness_ratio * 5.0 )
+	var correctness_score = max( 1.0, ceil( correctness_ratio * 5.0 ) )
 	
 	var time_ratio = min( 
 		self.wait_time_remaining / Globals.ORDER_MAX_WAIT_TIME,

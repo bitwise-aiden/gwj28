@@ -42,7 +42,6 @@ func should_start_cooking() -> bool:
 		self.items.size() == Globals.CRAFTING_MAX_SIZE
 	)
 
-
 func start_cooking():
 	if self.items.empty():
 		return
@@ -50,6 +49,7 @@ func start_cooking():
 	self.state = states.cooking
 	$cooking_timer.start( Globals.CRAFTING_COOKING_TIME )
 	$cooking_progress.visible = true
+	$pan.play( "cooking" )
 		
 	Event.emit_signal( "crafting_started" )
 
@@ -57,6 +57,7 @@ func start_cooking():
 func update_ui(): 
 	if self.crafting_menu:
 		self.crafting_menu.update_ui( items )
+		$pan.play( "idle" )
 
 
 func _on_cooking_timer_complete():
@@ -81,3 +82,4 @@ func _on_cooking_timer_complete():
 	self.items.clear()
 	self.state = states.adding
 	$cooking_progress.visible = false
+	$pan.play( "empty" )

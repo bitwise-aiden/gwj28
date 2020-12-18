@@ -19,15 +19,15 @@ func adjust_popularity( amount: int ) -> void:
 	
 	self.count_by_stars[ amount ] += 1
 	
-	var total_star_count = 0
-	var total_star_value = 0
+	var total_star_count = 0.0
+	var total_star_value = 0.0
 	self.popularity = 0
 	
 	for star in self.count_by_stars:
 		var count = self.count_by_stars[ star ]
 		
-		total_star_count = count
-		total_star_value = star * count
+		total_star_count += count
+		total_star_value += star * count
 		
 		self.popularity += ( star - 3 ) * count
 

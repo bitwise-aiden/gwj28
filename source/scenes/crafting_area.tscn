@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://source/assets/stove.png" type="Texture" id=1]
 [ext_resource path="res://source/scripts/crafting_area.gd" type="Script" id=2]
 [ext_resource path="res://source/assets/health_full.png" type="Texture" id=3]
 [ext_resource path="res://source/assets/health_container.png" type="Texture" id=4]
+[ext_resource path="res://source/scenes/pan.tscn" type="PackedScene" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 25 )
@@ -12,6 +13,10 @@ extents = Vector2( 32, 25 )
 scale = Vector2( 0.994671, 1.00387 )
 z_index = 5
 script = ExtResource( 2 )
+
+[node name="pan" parent="." instance=ExtResource( 5 )]
+position = Vector2( -6.03215, -6.97302 )
+z_index = 1
 
 [node name="inventory_slot" type="Sprite" parent="."]
 texture = ExtResource( 1 )
@@ -24,10 +29,10 @@ one_shot = true
 
 [node name="cooking_progress" type="TextureProgress" parent="."]
 visible = false
-margin_left = -50.0
-margin_top = -63.8929
-margin_right = 50.3937
-margin_bottom = -23.8929
+margin_left = -30.0
+margin_top = -45.0
+margin_right = -29.0
+margin_bottom = -44.0
 mouse_filter = 2
 max_value = 1.0
 step = 0.01

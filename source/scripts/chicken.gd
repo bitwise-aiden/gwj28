@@ -94,6 +94,7 @@ func _on_animation_finished():
 			var offset = Vector2( self.direction.x * -2.0, -3.0 )
 			var position = self.position + offset
 			Globals.spawn_pickup( Globals.RESOURCE_EGG, position)
+			Globals.first_egg = true
 
 
 func should_lay_egg():

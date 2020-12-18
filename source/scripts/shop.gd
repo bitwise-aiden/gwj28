@@ -35,6 +35,11 @@ func _process(delta):
 	if Globals.is_controller() && \
 			Input.is_action_just_pressed( "ui_accept" ):
 		self.shop_buy_pressed( self.controller_selected_slot )
+	
+	for i in range( max_items ):
+		if Input.is_action_just_pressed( String( i + 1 ) ):
+			self.shop_buy_pressed( i )
+			break 
 
 
 func shop_buy_pressed( index ):

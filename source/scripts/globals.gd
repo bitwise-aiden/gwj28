@@ -23,6 +23,7 @@ var player = null
 var popularity_scorer = null
 var shop = null
 var ui = null
+var first_egg = false
 var input_type = "keyboard"
 
 

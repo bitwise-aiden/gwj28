@@ -15,6 +15,9 @@ func _ready() -> void:
 
 
 func _process( delta: float ) -> void:
+	if !Globals.first_egg:
+		return
+	
 	var number_of_orders = self.orders.size()
 	
 	var popularity = Globals.popularity_scorer.popularity
