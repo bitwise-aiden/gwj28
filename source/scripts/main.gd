@@ -1,9 +1,5 @@
 class_name Main
 extends YSort
-
-
-func _ready() -> void:
-	randomize()
 	
 
 func _input( event ):

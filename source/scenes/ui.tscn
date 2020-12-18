@@ -20,12 +20,14 @@ __meta__ = {
 [node name="inventory" parent="." instance=ExtResource( 1 )]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -512.0
-margin_right = 512.0
+margin_left = -352.0
+margin_right = 672.0
 margin_bottom = 600.0
 
 [node name="crafting_menu" parent="." instance=ExtResource( 2 )]
 visible = false
+margin_left = -352.0
+margin_right = 672.0
 
 [node name="popularity_scorer" parent="." instance=ExtResource( 3 )]
 
@@ -33,3 +35,5 @@ visible = false
 
 [node name="shop_menu" parent="." instance=ExtResource( 6 )]
 visible = false
+margin_left = 160.0
+margin_right = 160.0

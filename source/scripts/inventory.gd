@@ -45,7 +45,20 @@ class InventorySlot:
 	
 	func unselect():
 		if !self.is_empty():
-			self.display.set_texture( self.pickup_resource.texture )
+			if self.pickup_resource.orderable:
+				var omelette_keys = self.pickup_resource.metadata[ "items" ] 
+				var omelette_items = []
+				
+				for key in omelette_keys:
+					var count = self.pickup_resource.metadata[ "items" ][ key ]
+					for i in range( count ):
+						omelette_items.append( key )
+						
+				omelette_items.sort_custom( Globals, "sort_item_names" )
+				
+				self.display.set_omelette( omelette_items )
+			else:
+				self.display.set_texture( self.pickup_resource.texture )
 			self.display.set_quantity( self.quantity )
 		else:
 			self.select()
@@ -95,7 +108,7 @@ func _ready() -> void:
 	for display_slot in $slots.get_children():
 		inventory_slots.append( InventorySlot.new( display_slot ) )
 	
-	$coins.text = "%d" % [ self.coin_count ]
+	$inventory_coins/coins.text = "%d" % [ self.coin_count ]
 
 
 func _process( delta: float ) -> void:
@@ -140,7 +153,7 @@ func _process( delta: float ) -> void:
 func buy( amount: int ) -> bool:
 	if self.coin_count >= amount:
 		self.coin_count -= amount
-		$coins.text = "%d" % [ self.coin_count ]
+		$inventory_coins/coins.text = "%d" % [ self.coin_count ]
 		return true
 	return false
 
@@ -314,7 +327,7 @@ func add_item_to_order_area( slot_index: int ) -> void:
 
 func pick_up_coin( pickup ) -> void:
 	self.coin_count += pickup.quantity
-	$coins.text = "%d" % [ self.coin_count ]
+	$inventory_coins/coins.text = "%d" % [ self.coin_count ]
 
 
 func pick_up_item( pickup ) -> void:

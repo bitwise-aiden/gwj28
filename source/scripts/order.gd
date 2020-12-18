@@ -11,7 +11,8 @@ var order_pickup = null
 
 func _init( id: int, ingredients: Array ) -> void:
 	self.id = id
-	self.ingredients = ingredients
+	self.ingredients = ingredients.duplicate()
+	self.ingredients.sort_custom( Globals, "sort_items" )
 	self.wait_time_remaining = (
 		Globals.ORDER_MAX_WAIT_TIME + 
 		Globals.ORDER_WAIT_TIME_GRACE_PERIOD

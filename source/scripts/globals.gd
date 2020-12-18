@@ -87,6 +87,10 @@ const SCREEN_WIDTH = 1024
 const STAR_MAX_SPEED = 10
 
 
+func _ready() -> void:
+	randomize()
+
+
 func is_keyboard(): 
 	return self.input_type == "keyboard"
 
@@ -109,3 +113,12 @@ func spawn_pickup( resource: Resource, position: Vector2,
 		instance.drop_cooldown = 1.0
 	
 	self.main.call_deferred( "add_child", instance )
+
+
+func sort_items(a, b): 
+	return sort_item_names( a.name, b.name )
+
+
+func sort_item_names( a, b ):
+	return a.length() < b.length()
+	

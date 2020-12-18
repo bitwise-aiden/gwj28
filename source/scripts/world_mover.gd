@@ -3,7 +3,7 @@ extends Node2D
 const SPEED = 3.0
 
 var bottom_position = Vector2( 0.0, 0.0 )
-var top_position = Vector2( 0.0, 300.0 )
+var top_position = Vector2( 0.0, 325.0 )
 
 var current = 0.0 
 

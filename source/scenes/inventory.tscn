@@ -1,17 +1,21 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://source/scripts/inventory.gd" type="Script" id=1]
 [ext_resource path="res://source/scenes/inventory_slot.tscn" type="PackedScene" id=2]
 [ext_resource path="res://source/assets/inventory_hover.png" type="Texture" id=3]
 [ext_resource path="res://source/assets/coin.png" type="Texture" id=4]
+[ext_resource path="res://source/assets/omelette-bacon.png" type="Texture" id=5]
+[ext_resource path="res://source/assets/omelette-egg.png" type="Texture" id=6]
+[ext_resource path="res://source/assets/omelette-cheese.png" type="Texture" id=7]
+[ext_resource path="res://source/assets/inventory_coins.png" type="Texture" id=8]
 
 [node name="inventory" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 12.1905
-margin_top = 4.07139
-margin_right = 12.1904
-margin_bottom = 4.07141
+margin_left = 13.0324
+margin_top = 4.63262
+margin_right = 13.0323
+margin_bottom = 4.63263
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -29,26 +33,51 @@ __meta__ = {
 }
 
 [node name="inventory_slot" parent="slots" instance=ExtResource( 2 )]
+omelette_item_textures = {
+"Bacon": ExtResource( 5 ),
+"Cheese": ExtResource( 7 ),
+"Egg": ExtResource( 6 )
+}
 
 [node name="inventory_slot2" parent="slots" instance=ExtResource( 2 )]
 margin_left = 68.0
 margin_right = 132.0
 inventory_index = 1
+omelette_item_textures = {
+"Bacon": ExtResource( 5 ),
+"Cheese": ExtResource( 7 ),
+"Egg": ExtResource( 6 )
+}
 
 [node name="inventory_slot3" parent="slots" instance=ExtResource( 2 )]
 margin_left = 136.0
 margin_right = 200.0
 inventory_index = 2
+omelette_item_textures = {
+"Bacon": ExtResource( 5 ),
+"Cheese": ExtResource( 7 ),
+"Egg": ExtResource( 6 )
+}
 
 [node name="inventory_slot4" parent="slots" instance=ExtResource( 2 )]
 margin_left = 204.0
 margin_right = 268.0
 inventory_index = 3
+omelette_item_textures = {
+"Bacon": ExtResource( 5 ),
+"Cheese": ExtResource( 7 ),
+"Egg": ExtResource( 6 )
+}
 
 [node name="inventory_slot5" parent="slots" instance=ExtResource( 2 )]
 margin_left = 272.0
 margin_right = 336.0
 inventory_index = 4
+omelette_item_textures = {
+"Bacon": ExtResource( 5 ),
+"Cheese": ExtResource( 7 ),
+"Egg": ExtResource( 6 )
+}
 
 [node name="selected_item" type="Sprite" parent="."]
 z_index = 3
@@ -77,16 +106,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="coin" type="Sprite" parent="."]
-position = Vector2( 358.987, 99.61 )
+[node name="inventory_coins" type="Sprite" parent="."]
+position = Vector2( 368.111, 103.55 )
+texture = ExtResource( 8 )
+
+[node name="coin" type="Sprite" parent="inventory_coins"]
+position = Vector2( -11.843, 0.0596161 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 4 )
 
-[node name="coins" type="Label" parent="."]
-margin_left = 370.168
-margin_top = 92.6535
-margin_right = 410.168
-margin_bottom = 106.653
+[node name="coins" type="Label" parent="inventory_coins"]
+margin_left = -1.94263
+margin_top = -6.89688
+margin_right = 18.0574
+margin_bottom = 7.10312
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
