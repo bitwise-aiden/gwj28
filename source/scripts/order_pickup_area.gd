@@ -19,15 +19,6 @@ func has_order() -> bool:
 	return !!self.order
 
 
-func has_point( point: Vector2 ) -> bool:
-	var rect = Rect2(
-		self.position - $collision.shape.extents,
-		$collision.shape.extents * 2.0
-	)
-	
-	return rect.has_point( point )
-
-
 func is_waiting() -> bool:
 	return self.order_pickup_arrived
 

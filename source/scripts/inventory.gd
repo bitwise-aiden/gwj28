@@ -26,6 +26,7 @@ class InventorySlot:
 		if update_display:
 			self.display.set_quantity( self.quantity )
 	
+	
 	func decrement_quantity():
 		self.quantity -= 1
 		if self.quantity <= 0:
@@ -37,6 +38,7 @@ class InventorySlot:
 	
 	func is_empty():
 		return self.pickup_resource == null
+	
 	
 	func select():
 		self.display.set_texture( null )
@@ -81,22 +83,12 @@ class InventorySlot:
 		self.unselect()
 
 var coin_count = 0
-
 var inventory_slots = []
 
 var selected_inventory_slot = null
-var hovered_inventory_slot = null
-
-var just_released = false
 
 var focused_crafting_area = null
-onready var crafting_menu = null
-
 var focused_order_area = null
-
-var owning_player = null
-
-var controller_selected_slot = 0
 
 
 func _ready() -> void:
@@ -112,23 +104,6 @@ func _ready() -> void:
 
 
 func _process( delta: float ) -> void:
-	self.handle_selected_slot()
-	
-	var mouse_position = self.get_global_mouse_position()
-	
-	for slot in self.inventory_slots:
-		if !slot.is_empty() && slot.display.has_point( mouse_position ):
-			$name_hint.visible = true
-			$name_hint/name.text = slot.pickup_resource.name
-			
-			$name_hint/name.rect_size = Vector2( 0.0, 0.0 )
-			$name_hint.rect_size = $name_hint/name.rect_size + Vector2( 10.0, 10.0 )
-			var offset = Vector2( $name_hint.rect_size.x * -0.5, 20.0 )
-			$name_hint.rect_global_position = mouse_position + offset
-			return
-	
-	$name_hint.visible = false
-	
 	for i in range( 5 ):
 		if Input.is_action_just_pressed( String( i + 1 ) ):
 			self.add_item_to_crafting_area( i )
@@ -138,15 +113,15 @@ func _process( delta: float ) -> void:
 	if !Globals.ui.shop_menu.visible:
 		if Globals.is_controller() && \
 				Input.is_action_just_pressed( "ui_accept" ):
-			self.add_item_to_crafting_area( self.controller_selected_slot )
-			self.add_item_to_order_area( self.controller_selected_slot )
+			self.add_item_to_crafting_area( self.selected_inventory_slot )
+			self.add_item_to_order_area( self.selected_inventory_slot )
 		
 		if Input.is_action_just_pressed( "scroll_left" ):
-			self.controller_selected_slot = ( 5 + self.controller_selected_slot - 1 ) % 5
+			self.selected_inventory_slot = ( 5 + self.selected_inventory_slot - 1 ) % 5
 			self.update_controller_ui()
 		
 		if Input.is_action_just_pressed( "scroll_right" ):
-			self.controller_selected_slot = ( self.controller_selected_slot + 1 ) % 5
+			self.selected_inventory_slot = ( self.selected_inventory_slot + 1 ) % 5
 			self.update_controller_ui()
 
 
@@ -168,119 +143,6 @@ func can_pickup( pickup ) -> bool:
 			self.inventory_slots[ i ].pickup_resource.name == pickup.name:
 			return true
 	return false
-	
-
-func handle_selected_slot() -> void:
-	$selected_item.global_position = self.get_global_mouse_position()
-	
-	if Input.is_action_just_pressed( "mouse" ):
-		self.select_slot()
-	elif Input.is_action_just_released( "mouse" ):
-		self.unselect_slot()
-
-
-func find_hovered_slot():
-	var mouse_position = self.get_global_mouse_position()
-	
-	for slot in self.inventory_slots:
-		if slot.display.has_point( mouse_position ):
-			return slot
-	
-	return null
-
-
-func select_slot():
-	var selected_slot = self.find_hovered_slot()
-	if !selected_slot || selected_slot.is_empty():
-		return
-
-	self.selected_inventory_slot = selected_slot
-	self.selected_inventory_slot.select()
-
-	$selected_item.texture = self.selected_inventory_slot.pickup_resource.texture
-	$selected_item.visible = true
-
-
-func unselect_slot():
-	if self.selected_inventory_slot == null:
-		return
-		
-	var mouse_position = Globals.main.get_local_mouse_position()
-		
-	if !self.drop_in_order_area() && !self.drop_in_crafting_area():
-		var hovered_inventory_slot = self.find_hovered_slot()
-		
-		if hovered_inventory_slot:
-			self.selected_inventory_slot.swap( 
-				hovered_inventory_slot
-			)
-		elif Globals.main.has_point( mouse_position ): 
-			var owner_position = self.owning_player.position
-			var mouse_direction = (mouse_position - owner_position).normalized()
-			var base_drop_position = owner_position + mouse_direction * 50.0 
-			
-			for i in range( self.selected_inventory_slot.quantity ):
-				var random_offset = Vector2( 
-					randf() * 15.0, 
-					0.0 
-				).rotated( randf() * TAU )
-				var drop_position =  base_drop_position + random_offset
-				Globals.spawn_pickup( 
-					self.selected_inventory_slot.pickup_resource, 
-					drop_position, 
-					true 
-				)
-				self.selected_inventory_slot.decrement_quantity()
-	
-	self.selected_inventory_slot.unselect()
-	
-	self.selected_inventory_slot = null
-	$selected_item.visible = false
-
-
-func drop_in_crafting_area():
-	if !self.selected_inventory_slot.pickup_resource.craftable:
-		return false
-	
-	if !self.focused_crafting_area:
-		return false
-	
-	var mouse_position = self.get_global_mouse_position()
-	if !self.crafting_menu.has_point( mouse_position ):
-		return false
-		
-	if !self.focused_crafting_area.add_item(
-			self.selected_inventory_slot.pickup_resource ):
-		return false 
-
-	self.selected_inventory_slot.decrement_quantity()
-	
-	return true
-
-
-func drop_in_order_area() -> bool:
-	var pickup = self.selected_inventory_slot.pickup_resource
-	if !pickup.orderable:
-		return false
-	
-	var hovered_order_area = null
-	var mouse_position = self.get_parent().get_local_mouse_position()
-	
-	for order in self.get_tree().get_nodes_in_group( "order_pickup_area" ):
-		if order.has_point( mouse_position ):
-			hovered_order_area = order
-			break
-	
-	if !hovered_order_area:
-		return false
-	
-	if !hovered_order_area.is_waiting():
-		return false
-	
-	hovered_order_area.fulfill_order( pickup )
-	self.selected_inventory_slot.decrement_quantity()
-	
-	return true
 
 
 func add_item_to_crafting_area( slot_index: int ) -> void:
@@ -302,6 +164,12 @@ func add_item_to_crafting_area( slot_index: int ) -> void:
 		return 
 	
 	self.inventory_slots[ slot_index ].decrement_quantity()
+	self.lerp_item(  
+		pickup, 
+		self.inventory_slots[ slot_index ].display.rect_global_position + Vector2( 32.0, 0.0 ), 
+		self.focused_crafting_area.position,
+		Task.RunFunc.new( funcref( self.focused_crafting_area, "update_ui" ) )
+	)
 
 
 func add_item_to_order_area( slot_index: int ) -> void:
@@ -321,8 +189,34 @@ func add_item_to_order_area( slot_index: int ) -> void:
 	if !pickup.orderable:
 		return
 		
-	self.focused_order_area.fulfill_order( pickup )
+#	self.focused_order_area.fulfill_order( pickup )
 	self.inventory_slots[ slot_index ].decrement_quantity()
+	
+	self.lerp_item( 
+		pickup, 
+		self.inventory_slots[ slot_index ].display.rect_global_position + Vector2( 32.0, 0.0 ),
+#		Globals.player.position,
+		self.focused_order_area.position,
+		Task.RunFunc.new( funcref( self.focused_order_area, "fulfill_order" ), [ pickup ] )
+	)
+
+
+func lerp_item( item, from: Vector2, to: Vector2, post_task: BaseTask ) -> void:
+	print(from, to)
+	for pickup_lerper in self.get_tree().get_nodes_in_group( "pickup_lerper" ):
+		print( pickup_lerper, pickup_lerper.visible )
+		if !pickup_lerper.visible:
+			pickup_lerper.lerp_texture( item.texture, from, to, 0.3 )
+			TaskManager.add_queue( 
+				pickup_lerper.name,
+				post_task
+			)
+			return 
+	
+	TaskManager.add_queue(
+		self.name,
+		post_task
+	)
 
 
 func pick_up_coin( pickup ) -> void:
@@ -349,7 +243,7 @@ func pick_up_item( pickup ) -> void:
 
 func update_controller_ui():
 	for i in range( self.inventory_slots.size() ):
-		if self.controller_selected_slot == i: 
+		if self.selected_inventory_slot == i: 
 			self.inventory_slots[ i ].display.modulate = Color.white
 		else:
 			self.inventory_slots[ i ].display.modulate = Color("b0b0b0")

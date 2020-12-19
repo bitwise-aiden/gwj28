@@ -19,11 +19,3 @@ func _process(delta):
 		
 	self.position.y = lerp( bottom_position.y, top_position.y, self.current )
 
-
-func has_point( point: Vector2 ) -> bool:
-	var rect = Rect2(
-		$drop_area.position - $drop_area.shape.extents,
-		$drop_area.shape.extents * 2.0
-	)
-	
-	return rect.has_point( point )

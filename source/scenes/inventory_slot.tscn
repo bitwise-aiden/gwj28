@@ -42,19 +42,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="quantity" type="Label" parent="."]
-visible = false
-margin_right = 48.0
-margin_bottom = 48.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_outline_modulate = Color( 1, 1, 1, 1 )
-align = 2
-valign = 2
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
-
 [node name="omelette" type="TextureRect" parent="."]
 visible = false
 margin_left = 8.0
@@ -90,4 +77,17 @@ margin_bottom = 16.0
 texture = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
+}
+
+[node name="quantity" type="Label" parent="."]
+visible = false
+margin_right = 48.0
+margin_bottom = 48.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 1, 1, 1, 1 )
+align = 2
+valign = 2
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
 }

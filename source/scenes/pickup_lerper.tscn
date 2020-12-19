@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://source/scripts/pickup_lerper.gd" type="Script" id=1]
+
+[node name="pickup_lerper" type="Sprite"]
+visible = false
+script = ExtResource( 1 )

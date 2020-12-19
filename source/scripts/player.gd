@@ -3,46 +3,32 @@ extends KinematicBody2D
 
 
 const shadow_size = 16
-
-var can_move: bool = true
-var focused_crafting_area = null
-var focusing_shop = false
 var oscillation_time_elapsed = 0.0
 
+var focused_crafting_area = null
 var focused_order_pickup_areas = []
+var focusing_shop = false
 
 
 func _ready() -> void:
 	Globals.player = self
-	
-	Event.connect( "crafting_started", self, "crafting_menu_close" )
-	Event.connect( "crafting_close_pressed", self, "crafting_menu_close")
-	Event.connect( "shop_close_pressed", self, "shop_close" )
-	
-	Globals.ui.inventory.owning_player = self
 
 
 func _process( delta: float ) -> void:
 	self.handle_movement( delta )
 	
 	if Input.is_action_just_pressed( "ui_cancel" ):
-		self.crafting_menu_close()
-		self.shop_close()
+		# Future pause menu
+		pass
 	
-	if self.focused_crafting_area:
-		if Input.is_action_just_pressed( "ui_accept" ):
-			if self.can_move:
-				self.crafting_menu_open( self.focused_crafting_area )
-			elif Globals.is_keyboard():
+	if self.focused_crafting_area: 
+		if Globals.is_keyboard():
+			if Input.is_action_just_pressed( "ui_accept" ):
 				self.focused_crafting_area.start_cooking()
-		elif Globals.is_controller() && \
-				Input.is_action_just_pressed( "controller_cook" ):
-			self.focused_crafting_area.start_cooking()
-	
-	if self.focusing_shop && \
-			Input.is_action_just_pressed( "ui_accept" ):
-		if self.can_move:
-			self.shop_open()
+		
+		if Globals.is_controller():
+			if Input.is_action_just_presssed( "controller_cook" ):
+				self.focused_crafting_area.start_cooking()
 		
 	
 	self.oscillation_time_elapsed += delta * 5.0
@@ -58,40 +44,16 @@ func can_pickup( pickup ) -> bool:
 	return Globals.ui.inventory.can_pickup( pickup )
 
 
-func crafting_menu_open( crafting_area ) -> void:
-	if crafting_area.state == CraftingArea.states.adding:
-		self.can_move = false
-#		self.focused_crafting_area = crafting_area
-		self.focused_crafting_area.crafting_menu = Globals.ui.crafting_menu
-		self.focused_crafting_area.update_ui()
-		Globals.ui.inventory.focused_crafting_area = crafting_area
-		Globals.ui.inventory.crafting_menu = Globals.ui.crafting_menu
-		Globals.ui.crafting_menu.focused_crafting_area = crafting_area
-		Globals.ui.crafting_menu.visible = true
-
-
-func crafting_menu_close() -> void:
-	self.can_move = true
-#	self.focused_crafting_area = null
-	Globals.ui.inventory.focused_crafting_area = null
-	Globals.ui.crafting_menu.focused_crafting_area = null
-	Globals.ui.crafting_menu.visible = false
-
-
 func shop_open() -> void:
-	self.can_move = false
 	Globals.ui.shop_menu.visible = true
 	Globals.ui.shop_menu.update_shop_display()
 
 
 func shop_close() -> void:
-	self.can_move = true
 	Globals.ui.shop_menu.visible = false
 
 
 func handle_movement( delta: float ) -> void:
-	if !can_move:
-		return
 	var start_position = self.position 
 	
 	var movement_horizontal = Vector2(
@@ -121,8 +83,9 @@ func handle_movement( delta: float ) -> void:
 	var collision = self.move_and_collide( 
 		 movement_offset
 	)	
-	if self.handle_collision( collision ):
-		return 
+	
+	if !collision: 
+		return
 
 	# If moving on horizontal and vertical
 	if movement_horizontal.length() && movement_vertical.length():
@@ -138,27 +101,7 @@ func handle_movement( delta: float ) -> void:
 				remaining_direction = movement_vertical
 			
 			# Proceed to move
-			collision = self.move_and_collide( remaining_direction * remaining_amount )
-	
-	self.handle_collision( collision )
-
-
-func handle_collision( collision ) -> bool:
-	if !collision:
-		return true
-	
-	if !Globals.PLAYER_OPEN_WHEN_COLLIDING:
-		return false 
-	
-	if collision.collider is CraftingArea:
-		self.crafting_menu_open( collision.colider )
-		return true
-	
-	if collision.collider is Shop:
-		self.shop_open()
-		return true
-	
-	return false
+			self.move_and_collide( remaining_direction * remaining_amount )
 	
 	
 func update_inventory_order_area() -> void:
@@ -182,23 +125,28 @@ func update_inventory_order_area() -> void:
 
 
 func _on_interaction_area_body_entered(body):
-	if body is CraftingArea:
+	if body is CraftingArea && \
+			body.state == CraftingArea.states.adding:
 		self.focused_crafting_area = body
+		self.focused_crafting_area.update_ui()
+		Globals.ui.inventory.focused_crafting_area = body
 	
 	if body is Shop: 
-		self.focusing_shop = true
+		self.shop_open()
 		
 	if body is OrderPickupArea:
 		self.focused_order_pickup_areas.append( body )
 		self.update_inventory_order_area()
 
 
-func _on_interaction_area_body_exited(body):
-	if body is CraftingArea:
+func _on_interaction_area_body_exited( body ):
+	if body is CraftingArea && self.focused_crafting_area:
+		self.focused_crafting_area.update_ui( false )
 		self.focused_crafting_area = null
+		Globals.ui.inventory.focused_crafting_area = null
 	
 	if body is Shop: 
-		self.focusing_shop = false
+		self.shop_close()
 
 	if body is OrderPickupArea:
 		var index = self.focused_order_pickup_areas.find( body )

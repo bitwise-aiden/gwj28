@@ -12,11 +12,6 @@ func _ready() -> void:
 	self.add_to_group( "inventory_slot" )
 
 
-func has_point( point: Vector2 ):
-	var rect = Rect2(self.rect_global_position, self.rect_size)
-	return rect.has_point( point )
-
-
 func set_omelette( items ) -> void:
 	$item.visible = false
 	$omelette.visible = true

@@ -8,7 +8,6 @@ enum states { adding = 0, cooking, done }
 var state = states.adding
 
 var item_count = 0
-var crafting_menu = null
 
 var items = []
 
@@ -28,7 +27,7 @@ func add_item( pickup ) -> bool:
 	
 	self.items.append( pickup )
 	
-	self.update_ui()
+#	self.update_ui()
 	
 	if self.should_start_cooking():
 		self.start_cooking()
@@ -49,14 +48,18 @@ func start_cooking():
 	self.state = states.cooking
 	$cooking_timer.start( Globals.CRAFTING_COOKING_TIME )
 	$cooking_progress.visible = true
+	$crafting_slots.visible = false
 	$pan.play( "cooking" )
-		
-	Event.emit_signal( "crafting_started" )
 
 
-func update_ui(): 
-	if self.crafting_menu:
-		self.crafting_menu.update_ui( items )
+func update_ui( override_visibility = true): 
+	$crafting_slots.visible = (
+		self.state == states.adding &&
+		( override_visibility || !self.items.empty() )
+	)
+	$crafting_slots.update_items( self.items )
+	
+	if self.state == states.adding:
 		$pan.play( "idle" )
 
 
@@ -83,3 +86,5 @@ func _on_cooking_timer_complete():
 	self.state = states.adding
 	$cooking_progress.visible = false
 	$pan.play( "empty" )
+	
+	self.update_ui( Globals.player.focused_crafting_area == self )

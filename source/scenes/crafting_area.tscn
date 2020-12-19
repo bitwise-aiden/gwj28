@@ -1,10 +1,15 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://source/assets/stove.png" type="Texture" id=1]
 [ext_resource path="res://source/scripts/crafting_area.gd" type="Script" id=2]
 [ext_resource path="res://source/assets/health_full.png" type="Texture" id=3]
 [ext_resource path="res://source/assets/health_container.png" type="Texture" id=4]
 [ext_resource path="res://source/scenes/pan.tscn" type="PackedScene" id=5]
+[ext_resource path="res://source/assets/inventory_slot.png" type="Texture" id=6]
+[ext_resource path="res://source/scripts/crafting_slots.gd" type="Script" id=7]
+[ext_resource path="res://source/assets/crafting-egg.png" type="Texture" id=8]
+[ext_resource path="res://source/assets/crafting-cheese.png" type="Texture" id=9]
+[ext_resource path="res://source/assets/crafting-bacon.png" type="Texture" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 25 )
@@ -18,7 +23,7 @@ script = ExtResource( 2 )
 position = Vector2( -6.03215, -6.97302 )
 z_index = 1
 
-[node name="inventory_slot" type="Sprite" parent="."]
+[node name="stove" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 
 [node name="collision_area" type="CollisionShape2D" parent="."]
@@ -38,6 +43,54 @@ max_value = 1.0
 step = 0.01
 texture_under = ExtResource( 4 )
 texture_progress = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="crafting_slots" type="Node2D" parent="."]
+visible = false
+script = ExtResource( 7 )
+textures = {
+"Bacon": ExtResource( 10 ),
+"Cheese": ExtResource( 9 ),
+"Egg": ExtResource( 8 )
+}
+
+[node name="slot_0" type="Sprite" parent="crafting_slots"]
+position = Vector2( -20, -40 )
+texture = ExtResource( 6 )
+
+[node name="item" type="TextureRect" parent="crafting_slots/slot_0"]
+margin_left = -6.0
+margin_top = -6.0
+margin_right = 6.0
+margin_bottom = 6.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="slot_1" type="Sprite" parent="crafting_slots"]
+position = Vector2( 0, -40 )
+texture = ExtResource( 6 )
+
+[node name="item" type="TextureRect" parent="crafting_slots/slot_1"]
+margin_left = -6.0
+margin_top = -6.0
+margin_right = 6.0
+margin_bottom = 6.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="slot_2" type="Sprite" parent="crafting_slots"]
+position = Vector2( 20, -40 )
+texture = ExtResource( 6 )
+
+[node name="item" type="TextureRect" parent="crafting_slots/slot_2"]
+margin_left = -6.0
+margin_top = -6.0
+margin_right = 6.0
+margin_bottom = 6.0
 __meta__ = {
 "_edit_use_anchors_": false
 }

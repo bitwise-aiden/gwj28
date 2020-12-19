@@ -19,14 +19,6 @@ func fulfill_order( item: Resource ) -> void:
 	self.order.fulfill_order( item )
 
 
-func has_point( point: Vector2 ) -> bool:
-	var rect = Rect2(
-		self.rect_global_position,
-		self.rect_size
-	)
-	return rect.has_point( point )
-
-
 func is_waiting() -> bool:
 	return self.order != null
 	

@@ -1,9 +1,5 @@
 extends Node
 
-
-signal crafting_close_pressed()
-signal crafting_started()
-
 signal input_type_changed()
 
 signal order_fulfilled( score )

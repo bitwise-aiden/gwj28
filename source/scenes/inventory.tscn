@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://source/scripts/inventory.gd" type="Script" id=1]
 [ext_resource path="res://source/scenes/inventory_slot.tscn" type="PackedScene" id=2]
-[ext_resource path="res://source/assets/inventory_hover.png" type="Texture" id=3]
 [ext_resource path="res://source/assets/coin.png" type="Texture" id=4]
 [ext_resource path="res://source/assets/omelette-bacon.png" type="Texture" id=5]
 [ext_resource path="res://source/assets/omelette-egg.png" type="Texture" id=6]
@@ -81,30 +80,6 @@ omelette_item_textures = {
 
 [node name="selected_item" type="Sprite" parent="."]
 z_index = 3
-
-[node name="name_hint" type="NinePatchRect" parent="."]
-margin_right = 10.0
-margin_bottom = 10.0
-texture = ExtResource( 3 )
-patch_margin_left = 5
-patch_margin_top = 5
-patch_margin_right = 5
-patch_margin_bottom = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="name" type="Label" parent="name_hint"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 26.0
-margin_bottom = 19.0
-size_flags_horizontal = 8
-size_flags_vertical = 8
-text = "Egg"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="inventory_coins" type="Sprite" parent="."]
 position = Vector2( 368.111, 103.55 )
