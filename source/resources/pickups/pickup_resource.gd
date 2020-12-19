@@ -8,6 +8,7 @@ export ( bool ) var orderable = false
 export ( int ) var price = 1
 export ( int ) var quantity = 1
 export ( float ) var radius = 16.0
+export ( int ) var stock = -1
 export ( Texture ) var texture
 
 var metadata = {}

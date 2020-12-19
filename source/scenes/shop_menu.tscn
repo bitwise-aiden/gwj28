@@ -49,4 +49,7 @@ margin_top = 230.963
 margin_right = 617.537
 margin_bottom = 250.963
 text = "X"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="close" to="." method="_on_close_pressed"]

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://source/assets/indicator.png" type="Texture" id=1]
+[ext_resource path="res://source/scripts/indicator.gd" type="Script" id=2]
+
+[node name="indicator" type="Sprite"]
+position = Vector2( 0, -27.6807 )
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+state = 2

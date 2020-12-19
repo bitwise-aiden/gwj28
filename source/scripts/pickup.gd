@@ -21,6 +21,22 @@ func _ready() -> void:
 	
 	$sprite.texture = self.pickup_resource.texture
 	$area/collision.shape.radius = self.pickup_resource.radius
+	
+	var advance_4 = (
+		Globals.tutorial_current_stage == 3 && Globals.advance_tutorial( 4 )
+	)
+	
+	var advance_8 = (
+		self.pickup_resource.orderable && 
+		Globals.tutorial_current_stage == 9 && 
+		Globals.advance_tutorial( 10 )
+	)
+	if  advance_4 || advance_8:
+		Globals.indicator.position = self.position + Vector2( 0.0, -70.0 )
+		Globals.indicator.rotation = 0
+		Globals.indicator.state = 2
+		Globals.indicator.z_index = 15
+		Globals.indicator.visible = true
 
 
 func _process( delta: float ) -> void:
@@ -65,6 +81,12 @@ func _process( delta: float ) -> void:
 func _on_body_entered( body ):
 	if body is Player:
 		self.target = body
+		
+		if Globals.tutorial_current_stage == 4:
+			Globals.advance_tutorial( 5 )
+		
+		if Globals.tutorial_current_stage == 10:
+			Globals.advance_tutorial( 11 )
 
 
 func _on_body_exited(body):

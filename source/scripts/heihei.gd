@@ -3,8 +3,8 @@ extends Node2D
 
 var should_spawn = false
 
-var top_left = Vector2( 483.0, -97.0 )
-var bottom_right = Vector2( 845.0, 214.0 )
+var top_left = Globals.CHICKEN_SPAWN_TOP_LEFT
+var bottom_right = Globals.CHICKEN_SPAWN_BOTTOM_RIGHT
 
 onready var shadow_position = $shadow.rect_position
 onready var shadow_size = $shadow.rect_size.x
@@ -22,7 +22,7 @@ func _ready() -> void:
 func _process( delta: float ) -> void:
 	if self.visible && randi() % 1000 == 0:
 		$sprite.play( "blink" )
-		self.should_spawn = true
+		self.should_spawn = Globals.tutorial_current_stage > 14
 		
 	
 	if $sprite.animation == "idle" && self.visible: 

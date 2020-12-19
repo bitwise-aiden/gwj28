@@ -20,6 +20,12 @@ func _init( id: int, ingredients: Array ) -> void:
 
 
 func process( delta: float ) -> bool:
+	if Globals.tutorial_current_stage < 14: 
+		return self.fulfilled
+	
+	if Globals.tutorial_current_stage < 18 && self.ingredients.back().name != "Egg":
+		return self.fulfilled
+	
 	self.wait_time_remaining = max( 0.0, self.wait_time_remaining - delta )
 
 	if self.wait_time_remaining == 0.0:
@@ -74,6 +80,9 @@ func fulfill_order( order: Resource ) -> void:
 	
 	var coin = Globals.RESOURCE_COIN.duplicate()
 	coin.quantity = self.ingredients.size() * Globals.ORDER_PRICE_MULTIPLIER
+	
+	if total_score == 5:
+		coin.quantity += 1
 	
 	Event.emit_signal( "pick_up_coin", coin )
 

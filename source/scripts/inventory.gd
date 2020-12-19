@@ -85,7 +85,7 @@ class InventorySlot:
 var coin_count = 0
 var inventory_slots = []
 
-var selected_inventory_slot = null
+var selected_inventory_slot = 0
 
 var focused_crafting_area = null
 var focused_order_area = null
@@ -149,7 +149,6 @@ func add_item_to_crafting_area( slot_index: int ) -> void:
 	if !self.focused_crafting_area:
 		return
 	
-	
 	var slot = self.inventory_slots[ slot_index ]
 	
 	if self.inventory_slots[ slot_index ].is_empty():
@@ -170,6 +169,9 @@ func add_item_to_crafting_area( slot_index: int ) -> void:
 		self.focused_crafting_area.position,
 		Task.RunFunc.new( funcref( self.focused_crafting_area, "update_ui" ) )
 	)
+	
+	if Globals.tutorial_current_stage == 7:
+		Globals.advance_tutorial( 8 )
 
 
 func add_item_to_order_area( slot_index: int ) -> void:
@@ -188,6 +190,9 @@ func add_item_to_order_area( slot_index: int ) -> void:
 	
 	if !pickup.orderable:
 		return
+	
+	if !self.focused_order_area.pre_fulfill():
+		return
 		
 #	self.focused_order_area.fulfill_order( pickup )
 	self.inventory_slots[ slot_index ].decrement_quantity()
@@ -202,9 +207,7 @@ func add_item_to_order_area( slot_index: int ) -> void:
 
 
 func lerp_item( item, from: Vector2, to: Vector2, post_task: BaseTask ) -> void:
-	print(from, to)
 	for pickup_lerper in self.get_tree().get_nodes_in_group( "pickup_lerper" ):
-		print( pickup_lerper, pickup_lerper.visible )
 		if !pickup_lerper.visible:
 			pickup_lerper.lerp_texture( item.texture, from, to, 0.3 )
 			TaskManager.add_queue( 
@@ -232,7 +235,7 @@ func pick_up_item( pickup ) -> void:
 			var slot = self.inventory_slots[ i ]
 			
 			if slot.pickup_resource.name == pickup.name:
-				slot.increment_quantity( slot != self.selected_inventory_slot )
+				slot.increment_quantity()
 				return
 		elif empty_index == -1:
 			empty_index = i

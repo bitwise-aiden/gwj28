@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://source/resources/pickups/pickup_resource.gd" type="Script" id=1]
+[ext_resource path="res://source/assets/pickup-chicken.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+craftable = false
+method = "pick_up_chicken"
+name = "Chicken"
+orderable = false
+price = 10
+quantity = 1
+radius = 16.0
+stock = 5
+texture = ExtResource( 2 )

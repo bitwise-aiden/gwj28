@@ -83,8 +83,20 @@ func set_position( position: Vector2 ) -> void:
 
 
 func wait_for_collection() -> bool:
+	if Globals.tutorial_current_stage == 11 && Globals.advance_tutorial( 12 ):
+		if Globals.player.focused_order_pickup_areas:
+			Globals.advance_tutorial( 13 )
+		else:
+			Globals.indicator.position = self.target_area.position + Vector2( 50.0, 0.0 )
+			Globals.indicator.rotation = PI * 0.5
+			Globals.indicator.state = 2
+			Globals.indicator.z_index = 2
+			Globals.indicator.visible = true
+	
+	
 	if !self.order.fulfilled:
 		return false
+	
 	
 	self.order = null
 	self.target_area.set_order( null )

@@ -44,6 +44,15 @@ func _process(delta):
 
 func shop_buy_pressed( index ):
 	var item = self.items[ index ] 
+	if item.stock == 0:
+		return 
+		
+	if Globals.tutorial_current_stage == 16: 
+		if item.name != Globals.tutorial_extra_ingredient:
+			return 
+		Globals.advance_tutorial( 17 )
+		
+	self.items[ index ].stock -= 1
 	
 	if Globals.inventory.buy( item.price ):
 		Globals.spawn_pickup( item, self.position + spawn_direction * 50.0 )

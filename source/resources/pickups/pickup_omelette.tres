@@ -12,4 +12,5 @@ orderable = true
 price = 1
 quantity = 1
 radius = 32.0
+stock = -1
 texture = ExtResource( 2 )

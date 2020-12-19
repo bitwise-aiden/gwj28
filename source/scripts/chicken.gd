@@ -14,7 +14,7 @@ var speed_modifier: float = 1.0
 var time_elapsed = 0.0
 var laying_cooldown = 0.0
 
-
+#
 func _ready() -> void:
 	self.set_state( states.idle )
 	self.time_elapsed = randf() * TAU
@@ -98,10 +98,18 @@ func _on_animation_finished():
 
 
 func should_lay_egg():
+	if Globals.tutorial_current_stage == 2:
+		Globals.advance_tutorial( 3 )
+		return true
+	
+#	if Globals.tutorial_current_stage in [ 15, 16, 17 ]:
+#		Globals.ui.inventory.
+	
 	return (
 		!Globals.is_in_kitchen( self.position ) && 
 		self.laying_cooldown == 0.0 && 
-		randi() % Globals.CHICKEN_SPAWN_EGG_CHANCE == 0
+		randi() % Globals.CHICKEN_SPAWN_EGG_CHANCE == 0 && 
+		Globals.tutorial_current_stage >= 14
 	)
 
 func set_state( incoming_state ) -> void:

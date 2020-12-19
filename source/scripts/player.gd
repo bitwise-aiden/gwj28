@@ -27,7 +27,7 @@ func _process( delta: float ) -> void:
 				self.focused_crafting_area.start_cooking()
 		
 		if Globals.is_controller():
-			if Input.is_action_just_presssed( "controller_cook" ):
+			if Input.is_action_just_pressed( "controller_cook" ):
 				self.focused_crafting_area.start_cooking()
 		
 	
@@ -130,13 +130,21 @@ func _on_interaction_area_body_entered(body):
 		self.focused_crafting_area = body
 		self.focused_crafting_area.update_ui()
 		Globals.ui.inventory.focused_crafting_area = body
+		
+		if Globals.tutorial_current_stage == 6: 
+			Globals.advance_tutorial( 7 )
 	
 	if body is Shop: 
+		if Globals.tutorial_current_stage == 15: 
+			Globals.advance_tutorial( 16 )
 		self.shop_open()
 		
 	if body is OrderPickupArea:
 		self.focused_order_pickup_areas.append( body )
 		self.update_inventory_order_area()
+		
+		if Globals.tutorial_current_stage == 12: 
+			Globals.advance_tutorial( 13 )
 
 
 func _on_interaction_area_body_exited( body ):

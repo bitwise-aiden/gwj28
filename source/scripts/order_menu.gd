@@ -15,8 +15,13 @@ func _ready() -> void:
 
 
 func _process( delta: float ) -> void:
-	if !Globals.first_egg:
-		return
+	var override = false
+	
+	if Globals.tutorial_current_stage < 6:
+		override = true
+		
+	if Globals.tutorial_current_stage < 18 && Globals.tutorial_extra_ingredient:
+		override = true
 	
 	var number_of_orders = self.orders.size()
 	
@@ -37,19 +42,22 @@ func _process( delta: float ) -> void:
 		popularity / Globals.ORDER_POPULARITY_EXTRA_INGREDIENT, 1.0 
 	)
 	
-	if self.orders.size() < max_orders:
+	if self.orders.size() < max_orders && !override:
 		self.order_creation_time_out = max( 0.0, self.order_creation_time_out - delta )
 		
-		if randi() % order_creation_chance == 0 || \
-			self.order_creation_time_out == 0.0:
+		if (randi() % order_creation_chance == 0 || \
+			self.order_creation_time_out == 0.0):
 			var ingredients = self.required_ingredients.duplicate()
 			
 			for i in range( Globals.ORDER_MAX_SIZE - self.orders.size() ):
 				if randf() >= extra_ingredient_chance:
 					var ingredient = randi() % self.optional_ingredients.size()
-					ingredients.append( 
-						self.optional_ingredients[ ingredient ] 
-					)
+					ingredient =  self.optional_ingredients[ ingredient ]
+					ingredients.append( ingredient )
+					
+					if Globals.tutorial_current_stage == 14 && ingredient.name != "Egg":
+						Globals.advance_tutorial( 15 )
+						Globals.tutorial_extra_ingredient = ingredient.name
 			
 			self.order_creation_time_out = Globals.ORDER_CREATION_TIME_OUT
 			self.order_index += 1

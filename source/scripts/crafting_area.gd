@@ -22,6 +22,9 @@ func _process( delta ):
 
 
 func add_item( pickup ) -> bool:
+	if self.state == states.cooking:
+		return false
+	
 	if self.items.size() == Globals.CRAFTING_MAX_SIZE: 
 		return false
 	
@@ -42,7 +45,7 @@ func should_start_cooking() -> bool:
 	)
 
 func start_cooking():
-	if self.items.empty():
+	if self.items.empty() || self.state == states.cooking:
 		return
 		
 	self.state = states.cooking
@@ -50,6 +53,9 @@ func start_cooking():
 	$cooking_progress.visible = true
 	$crafting_slots.visible = false
 	$pan.play( "cooking" )
+	
+	if Globals.tutorial_current_stage == 8:
+		Globals.advance_tutorial( 9 )
 
 
 func update_ui( override_visibility = true): 

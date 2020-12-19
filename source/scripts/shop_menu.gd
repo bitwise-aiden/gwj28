@@ -8,7 +8,15 @@ func update_shop_display():
 		if index < Globals.shop.items.size():
 			var item = Globals.shop.items[ index ]
 			self.items[ index ].set_texture( item.texture )
-			var can_buy = Globals.inventory.can_buy( item.price )
+			var can_buy = (
+				Globals.inventory.can_buy( item.price ) &&  
+				abs( item.stock ) > 0 && 
+				Globals.tutorial_current_stage > 14
+			)
+			
+			if Globals.tutorial_current_stage == 16:
+				can_buy = item.name == Globals.tutorial_extra_ingredient
+			
 			self.items[ index ].set_can_buy( can_buy )
 			self.items[ index ].visible = true
 		else:

@@ -4,6 +4,7 @@ signal input_type_changed()
 
 signal order_fulfilled( score )
 
+signal pick_up_chicken( pickup )
 signal pick_up_coin( pickup )
 signal pick_up_item( pickup )
 

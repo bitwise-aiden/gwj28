@@ -34,11 +34,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://source/scripts/inventory.gd"
 }, {
-"base": "YSort",
-"class": "Main",
-"language": "GDScript",
-"path": "res://source/scripts/main.gd"
-}, {
 "base": "Reference",
 "class": "Order",
 "language": "GDScript",
@@ -100,7 +95,6 @@ _global_script_class_icons={
 "CurrentQueue": "",
 "Grass": "",
 "Inventory": "",
-"Main": "",
 "Order": "",
 "OrderPickupArea": "",
 "Pickup": "",
