@@ -138,6 +138,9 @@ func can_buy( amount: int ) -> bool:
 
 
 func can_pickup( pickup ) -> bool:
+	if pickup.method != "pick_up_item":
+		return true
+	
 	for i in range( self.inventory_slots.size() ):
 		if self.inventory_slots[ i ].is_empty() || \
 			self.inventory_slots[ i ].pickup_resource.name == pickup.name:

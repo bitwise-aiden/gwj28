@@ -33,8 +33,10 @@ func adjust_popularity( amount: int ) -> void:
 
 	self.average_stars = total_star_value / total_star_count
 	
-	$popularity.text = "Stars: %f\nPopularity: %f\n\n debug: %s" % [
-		self.average_stars,
-		self.popularity,
-		String( self.count_by_stars )
-	]
+	Event.emit_signal( "popularity_changed", self.average_stars )
+	
+#	$popularity.text = "Stars: %f\nPopularity: %f\n\n debug: %s" % [
+#		self.average_stars,
+#		self.popularity,
+#		String( self.count_by_stars )
+#	]

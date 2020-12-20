@@ -4,7 +4,6 @@ extends StaticBody2D
 
 var order_pickup_arrived = false
 var order = null
-var pre_fulfilled = false
 
 
 func _ready():
@@ -13,16 +12,18 @@ func _ready():
 
 
 func pre_fulfill() -> bool:
-	if self.pre_fulfilled: 
+	if !self.order:
+		return false
+	
+	if self.order.pre_fulfilled: 
 		return false
 		
-	self.pre_fulfilled = true
+	self.order.pre_fulfilled = true
 	return true
 
 func fulfill_order( item: Resource ) -> void:
 	self.order.fulfill_order( item )
-	self.pre_fulfilled = false
-
+	
 	if Globals.tutorial_current_stage == 13: 
 		Globals.advance_tutorial( 14 )
 	

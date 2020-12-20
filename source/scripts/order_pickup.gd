@@ -137,7 +137,7 @@ func wait_for_order() -> bool:
 		return false
 	
 	self.order.order_pickup = self
-	$order_id.text = "#%d" % self.order.id
+#	$order_id.text = "#%d" % self.order.id
 	
 	self.add_queue(
 		Task.Lerp.new( 

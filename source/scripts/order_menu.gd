@@ -3,8 +3,10 @@ extends Node
 
 export (Array, Resource) var required_ingredients = []
 export (Array, Resource) var optional_ingredients = []
+export (Array, Color) var order_colors = []
+var used_order_colors = []
 
-onready var order_displays = self.get_children()
+onready var order_displays = $displays.get_children()
 
 var order_index = 1000
 var orders = []
@@ -21,7 +23,7 @@ func _process( delta: float ) -> void:
 		override = true
 		
 	if Globals.tutorial_current_stage < 18 && Globals.tutorial_extra_ingredient:
-		override = true
+		override = self.orders.size() > 0
 	
 	var number_of_orders = self.orders.size()
 	
@@ -50,18 +52,25 @@ func _process( delta: float ) -> void:
 			var ingredients = self.required_ingredients.duplicate()
 			
 			for i in range( Globals.ORDER_MAX_SIZE - self.orders.size() ):
-				if randf() >= extra_ingredient_chance:
+				if randf() >= extra_ingredient_chance || Globals.tutorial_extra_ingredient:
 					var ingredient = randi() % self.optional_ingredients.size()
 					ingredient =  self.optional_ingredients[ ingredient ]
 					ingredients.append( ingredient )
 					
-					if Globals.tutorial_current_stage == 14 && ingredient.name != "Egg":
+					if Globals.tutorial_current_stage in [ 14, 15, 16, 17 ] && ingredient.name != "Egg":
 						Globals.advance_tutorial( 15 )
 						Globals.tutorial_extra_ingredient = ingredient.name
+						break
 			
 			self.order_creation_time_out = Globals.ORDER_CREATION_TIME_OUT
 			self.order_index += 1
-			orders.append( Order.new( self.order_index, ingredients ) )
+			
+			var color_index = randi() % self.order_colors.size()
+			var color = self.order_colors[ color_index ]
+			self.order_colors.remove( color_index )
+			self.used_order_colors.append( color )
+			
+			orders.append( Order.new( color, ingredients ) )
 	
 	var marked_for_removal = []
 	for index in range( self.orders.size() ):
@@ -70,6 +79,10 @@ func _process( delta: float ) -> void:
 	
 	marked_for_removal.invert()
 	for index in marked_for_removal:
+		var color_index = self.used_order_colors.find( self.orders[ index ].color )
+		self.order_colors.append( self.used_order_colors[ color_index ] )
+		self.used_order_colors.remove( color_index )
+		
 		self.orders.remove( index )
 	
 	

@@ -1,44 +1,112 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://source/scripts/order_menu.gd" type="Script" id=1]
 [ext_resource path="res://source/resources/pickups/pickup_egg.tres" type="Resource" id=2]
 [ext_resource path="res://source/scenes/order_display.tscn" type="PackedScene" id=3]
 [ext_resource path="res://source/resources/pickups/pickup_bacon.tres" type="Resource" id=4]
 [ext_resource path="res://source/resources/pickups/pickup_cheese.tres" type="Resource" id=5]
+[ext_resource path="res://source/assets/order_area.png" type="Texture" id=6]
+[ext_resource path="res://source/scenes/star_rating.tscn" type="PackedScene" id=7]
+[ext_resource path="res://source/assets/crafting-cheese.png" type="Texture" id=8]
+[ext_resource path="res://source/assets/crafting-egg.png" type="Texture" id=9]
+[ext_resource path="res://source/assets/crafting-blank.png" type="Texture" id=10]
+[ext_resource path="res://source/assets/crafting-bacon.png" type="Texture" id=11]
 
-[node name="order_menu" type="VBoxContainer"]
-margin_left = 161.109
-margin_top = 100.0
-margin_right = 265.109
-margin_bottom = 396.0
+[node name="order_menu" type="TextureRect"]
+margin_left = 64.0
+margin_top = 64.0
+margin_right = 320.0
+margin_bottom = 360.0
+texture = ExtResource( 6 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 required_ingredients = [ ExtResource( 2 ) ]
 optional_ingredients = [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 5 ) ]
+order_colors = [ Color( 0.909804, 0.909804, 0.317647, 1 ), Color( 0.741176, 0.192157, 0.54902, 1 ), Color( 0.294118, 0.690196, 0.760784, 1 ), Color( 0.741176, 0.2, 0.105882, 1 ), Color( 0.137255, 0.639216, 0.137255, 1 ) ]
 
-[node name="order_display_0" parent="." instance=ExtResource( 3 )]
-visible = false
-margin_right = 104.0
-margin_bottom = 56.0
+[node name="displays" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
 
-[node name="order_display_1" parent="." instance=ExtResource( 3 )]
-visible = false
-margin_right = 104.0
-margin_bottom = 56.0
+[node name="order_display_0" parent="displays" instance=ExtResource( 3 )]
+margin_left = 35.1815
+margin_top = 101.626
+margin_right = 97.1815
+margin_bottom = 127.626
+textures = {
+"Bacon": ExtResource( 11 ),
+"Blank": ExtResource( 10 ),
+"Cheese": ExtResource( 8 ),
+"Egg": ExtResource( 9 )
+}
 
-[node name="order_display_2" parent="." instance=ExtResource( 3 )]
-visible = false
-margin_right = 104.0
-margin_bottom = 56.0
+[node name="order_display_1" parent="displays" instance=ExtResource( 3 )]
+margin_left = 34.9632
+margin_top = 149.289
+margin_right = 96.9632
+margin_bottom = 175.289
+textures = {
+"Bacon": ExtResource( 11 ),
+"Blank": ExtResource( 10 ),
+"Cheese": ExtResource( 8 ),
+"Egg": ExtResource( 9 )
+}
 
-[node name="order_display_3" parent="." instance=ExtResource( 3 )]
-visible = false
-margin_right = 104.0
-margin_bottom = 56.0
+[node name="order_display_2" parent="displays" instance=ExtResource( 3 )]
+margin_left = 34.6269
+margin_top = 194.725
+margin_right = 96.6269
+margin_bottom = 220.725
+textures = {
+"Bacon": ExtResource( 11 ),
+"Blank": ExtResource( 10 ),
+"Cheese": ExtResource( 8 ),
+"Egg": ExtResource( 9 )
+}
 
-[node name="order_display_4" parent="." instance=ExtResource( 3 )]
-visible = false
-margin_right = 104.0
-margin_bottom = 56.0
+[node name="order_display_3" parent="displays" instance=ExtResource( 3 )]
+margin_left = 146.989
+margin_top = 148.844
+margin_right = 208.989
+margin_bottom = 174.844
+textures = {
+"Bacon": ExtResource( 11 ),
+"Blank": ExtResource( 10 ),
+"Cheese": ExtResource( 8 ),
+"Egg": ExtResource( 9 )
+}
+
+[node name="order_display_4" parent="displays" instance=ExtResource( 3 )]
+margin_left = 147.435
+margin_top = 195.171
+margin_right = 209.435
+margin_bottom = 221.171
+textures = {
+"Bacon": ExtResource( 11 ),
+"Blank": ExtResource( 10 ),
+"Cheese": ExtResource( 8 ),
+"Egg": ExtResource( 9 )
+}
+
+[node name="stars" type="Node2D" parent="."]
+
+[node name="star_rating" parent="stars" instance=ExtResource( 7 )]
+position = Vector2( 144, 94 )
+
+[node name="star_rating2" parent="stars" instance=ExtResource( 7 )]
+position = Vector2( 160, 94 )
+index = 1
+
+[node name="star_rating3" parent="stars" instance=ExtResource( 7 )]
+position = Vector2( 176, 94 )
+index = 2
+
+[node name="star_rating4" parent="stars" instance=ExtResource( 7 )]
+position = Vector2( 192, 94 )
+index = 3
+
+[node name="star_rating5" parent="stars" instance=ExtResource( 7 )]
+position = Vector2( 208, 94 )
+index = 4

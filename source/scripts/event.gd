@@ -8,5 +8,7 @@ signal pick_up_chicken( pickup )
 signal pick_up_coin( pickup )
 signal pick_up_item( pickup )
 
+signal popularity_changed( amount )
+
 signal shop_buy_pressed( index )
 signal shop_close_pressed()

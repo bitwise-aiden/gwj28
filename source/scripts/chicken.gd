@@ -84,10 +84,6 @@ func _on_animation_finished():
 	match state:
 		states.idle:
 			self.set_state( states.wandering )
-			
-			if randi() % Globals.CHICKEN_SPAWN_COIN_CHANCE == 0:
-				var position = self.position + self.direction * 20.0
-				Globals.spawn_pickup( Globals.RESOURCE_COIN, position )
 		states.laying:
 			self.set_state( states.wandering )
 			
@@ -102,8 +98,7 @@ func should_lay_egg():
 		Globals.advance_tutorial( 3 )
 		return true
 	
-#	if Globals.tutorial_current_stage in [ 15, 16, 17 ]:
-#		Globals.ui.inventory.
+	# TODO: Prevent chicken spawning eggs while working on shop
 	
 	return (
 		!Globals.is_in_kitchen( self.position ) && 

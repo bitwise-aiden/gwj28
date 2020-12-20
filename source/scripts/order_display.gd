@@ -1,5 +1,7 @@
 extends Node
 
+export( Dictionary ) var textures = {}
+
 onready var items = $order_items.get_children()
 
 var order = null
@@ -33,12 +35,13 @@ func set_order( order = null ) -> void:
 func update_display() -> void:
 	if !self.order:
 		return
-		
-	$order_id.text = "#%d" % self.order.id
 	
 	for i in self.items.size():
+		var item_name = "Blank"
+		
 		if i < self.order.size():
-			self.items[ i ].texture = self.order.texture_at( i )
-			self.items[ i ].visible = true
-		else:
-			self.items[ i ].visible = false
+			item_name = self.order.name_at( i )
+		
+		self.items[ i ].texture = self.textures[ item_name ]
+	
+	$order_color.modulate = self.order.color

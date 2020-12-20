@@ -22,8 +22,8 @@ func _ready() -> void:
 func _process( delta: float ) -> void:
 	if self.visible && randi() % 1000 == 0:
 		$sprite.play( "blink" )
-		self.should_spawn = Globals.tutorial_current_stage > 14
-		
+		self.should_spawn = Globals.tutorial_current_stage > 14\
+	
 	
 	if $sprite.animation == "idle" && self.visible: 
 		self.oscillation_time_elapsed += delta

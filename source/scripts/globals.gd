@@ -129,7 +129,7 @@ func advance_tutorial( stage: int ) -> bool:
 	
 	match self.tutorial_current_stage:
 		1: 
-			self.indicator.position = Vector2( 672.0, 340.0 )
+			self.indicator.position = Vector2( 672.0, 360.0 )
 			self.indicator.rotation = PI
 			self.indicator.state = 2
 			self.indicator.z_index = 2
@@ -160,7 +160,8 @@ func advance_tutorial( stage: int ) -> bool:
 			self.indicator.visible = true
 		16: 
 			self.indicator.visible = false
-			
+		18:
+			self.tutorial_extra_ingredient = null
 			
 	
 	return true

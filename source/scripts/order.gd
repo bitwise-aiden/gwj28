@@ -1,16 +1,16 @@
 class_name Order
 
-var id = 0
-
+var color = Color.white
 var fulfilled = false
 var ingredients = []
+var pre_fulfilled = false
 var wait_time_remaining = 0.0
 
 var order_pickup = null
 
 
-func _init( id: int, ingredients: Array ) -> void:
-	self.id = id
+func _init( color: Color, ingredients: Array ) -> void:
+	self.color = color
 	self.ingredients = ingredients.duplicate()
 	self.ingredients.sort_custom( Globals, "sort_items" )
 	self.wait_time_remaining = (
@@ -20,6 +20,9 @@ func _init( id: int, ingredients: Array ) -> void:
 
 
 func process( delta: float ) -> bool:
+	if self.pre_fulfilled:
+		return self.fulfilled
+	
 	if Globals.tutorial_current_stage < 14: 
 		return self.fulfilled
 	
@@ -35,8 +38,8 @@ func process( delta: float ) -> bool:
 	return self.fulfilled
 
 
-func texture_at( index: int ):
-	return self.ingredients[ index ].texture
+func name_at( index: int ):
+	return self.ingredients[ index ].name
 
 
 func size() -> int: 
@@ -73,7 +76,7 @@ func fulfill_order( order: Resource ) -> void:
 	)
 	var time_score = ceil( time_ratio * 5.0 )
 
-	var total_score = int( ( correctness_score  + time_score ) / 2.0 )
+	var total_score = int( ( correctness_score * 2.0  + time_score ) / 3.0 )
 	
 	self.fulfilled = true
 	Event.emit_signal( "order_fulfilled", total_score )
