@@ -42,6 +42,10 @@ func is_waiting() -> bool:
 
 func order_complete() -> bool:
 	return self.order.fulfilled
+	
+	
+func set_selected( selected: bool ) -> void:
+	$belt.playing = selected || ( self.order && self.order.pre_fulfilled )
 
 
 func set_order( incoming_order ) -> void:

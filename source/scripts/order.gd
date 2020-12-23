@@ -4,6 +4,7 @@ var color = Color.white
 var fulfilled = false
 var ingredients = []
 var pre_fulfilled = false
+var should_tick = false
 var wait_time_remaining = 0.0
 
 var order_pickup = null
@@ -20,6 +21,9 @@ func _init( color: Color, ingredients: Array ) -> void:
 
 
 func process( delta: float ) -> bool:
+	if !self.should_tick:
+		return self.fulfilled
+		 
 	if self.pre_fulfilled:
 		return self.fulfilled
 	
@@ -48,6 +52,10 @@ func size() -> int:
 
 func waiting_progress() -> float:
 	return self.wait_time_remaining / Globals.ORDER_MAX_WAIT_TIME
+
+
+func set_should_tick( should: bool ) -> void:
+	self.should_tick = should
 
 
 func fulfill_order( order: Resource ) -> void:

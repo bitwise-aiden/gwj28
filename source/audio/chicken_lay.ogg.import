@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/chicken_lay.ogg-183541c8eb420a2c6e818a9df9fe7fc4.oggstr"
+
+[deps]
+
+source_file="res://source/audio/chicken_lay.ogg"
+dest_files=[ "res://.import/chicken_lay.ogg-183541c8eb420a2c6e818a9df9fe7fc4.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -2,7 +2,7 @@ extends Node
 
 export( Dictionary ) var textures = {}
 
-onready var items = $order_items.get_children()
+onready var items = $order/order_items.get_children()
 
 var order = null
 

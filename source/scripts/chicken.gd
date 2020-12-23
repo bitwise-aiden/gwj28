@@ -27,6 +27,9 @@ func _process( delta: float ) -> void:
 			self.handle_wandering( delta )
 		states.laying:
 			self.handle_laying( delta )
+			
+	if randi() % 500 == 0:
+		$cluck.play( 3.0 )
 
 
 func handle_laying( delta: float ) -> void:
@@ -43,6 +46,7 @@ func handle_wandering( delta: float ) -> void:
 		
 		if self.should_lay_egg():
 			self.laying_cooldown = 2.0
+			$lay.play()
 			self.set_state( states.laying )
 			return
 	

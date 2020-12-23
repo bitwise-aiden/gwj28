@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/sizzle.ogg-f92f3dafe2894bfe99ebc3ac274d2fab.oggstr"
+
+[deps]
+
+source_file="res://source/audio/sizzle.ogg"
+dest_files=[ "res://.import/sizzle.ogg-f92f3dafe2894bfe99ebc3ac274d2fab.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

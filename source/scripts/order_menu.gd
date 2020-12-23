@@ -70,6 +70,7 @@ func _process( delta: float ) -> void:
 			self.order_colors.remove( color_index )
 			self.used_order_colors.append( color )
 			
+			$order.play()
 			orders.append( Order.new( color, ingredients ) )
 	
 	var marked_for_removal = []

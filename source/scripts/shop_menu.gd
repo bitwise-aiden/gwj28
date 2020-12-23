@@ -1,6 +1,6 @@
 extends Control
 
-onready var items = $items.get_children()
+onready var items = self.get_children()
 
 
 func update_shop_display():

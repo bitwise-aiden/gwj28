@@ -123,6 +123,7 @@ TaskManager="*res://tools/scripts/task/task_manager.gd"
 [display]
 
 window/size/resizable=false
+window/stretch/mode="viewport"
 
 [importer_defaults]
 

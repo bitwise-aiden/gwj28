@@ -6,7 +6,7 @@ const CHICKEN_SPAWN_COIN_CHANCE = 1000
 const CHICKEN_SPAWN_EGG_CHANCE = 1000
 const CHICKEN_SPEED = 50.0
 const CHICKEN_SPEED_MODIFER_MAX = 3.0
-const CHICKEN_SPAWN_TOP_LEFT = Vector2( 483.0, -97.0 )
+const CHICKEN_SPAWN_TOP_LEFT = Vector2( 500.0, -50.0 )
 const CHICKEN_SPAWN_BOTTOM_RIGHT = Vector2( 845.0, 214.0 )
 
 
@@ -52,7 +52,7 @@ const ORDER_SCORE_CORRECT_ITEM = 2
 const ORDER_SCORE_EXTRA_ITEM = -1
 const ORDER_SCORE_MISSING_ITEM = -1
 const ORDER_SCORE_WAIT_TIME_EXCEEDED_PER_ITEM = -3
-const ORDER_WAIT_TIME_GRACE_PERIOD = 5.0
+const ORDER_WAIT_TIME_GRACE_PERIOD = 0.5
 
 
 # Player globals
@@ -126,6 +126,9 @@ func advance_tutorial( stage: int ) -> bool:
 	
 	
 	self.tutorial_current_stage += 1
+	
+	Event.emit_signal( "tutorial_advanced", self.tutorial_current_stage )
+	
 	
 	match self.tutorial_current_stage:
 		1: 

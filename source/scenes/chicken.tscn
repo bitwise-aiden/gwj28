@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://source/assets/chicken.png" type="Texture" id=1]
 [ext_resource path="res://source/scripts/chicken.gd" type="Script" id=2]
 [ext_resource path="res://source/assets/chicken_walk_2.png" type="Texture" id=3]
 [ext_resource path="res://source/assets/chicken_walk_1.png" type="Texture" id=4]
+[ext_resource path="res://source/audio/chicken_lay.ogg" type="AudioStream" id=5]
+[ext_resource path="res://source/audio/chicken_cluck.ogg" type="AudioStream" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 22, 32 )
@@ -44,5 +46,16 @@ animation = "idle"
 
 [node name="collision" type="CollisionShape2D" parent="detector"]
 shape = SubResource( 3 )
+
+[node name="cluck" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
+volume_db = -6.0
+max_distance = 150.0
+attenuation = 0.277392
+
+[node name="lay" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 5 )
+volume_db = 5.818
+max_distance = 150.0
 [connection signal="animation_finished" from="sprite" to="." method="_on_animation_finished"]
 [connection signal="body_entered" from="detector" to="." method="_on_detector_body_entered"]

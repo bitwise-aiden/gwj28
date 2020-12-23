@@ -116,10 +116,10 @@ func update_inventory_order_area() -> void:
 			min_distance = distance
 			min_order_area = order_area
 		
-		order_area.modulate = Color.gray
+		order_area.set_selected( false )
 	
 	if min_order_area:
-		min_order_area.modulate = Color.white
+		min_order_area.set_selected( true )
 	
 	Globals.ui.inventory.focused_order_area = min_order_area
 
@@ -133,11 +133,16 @@ func _on_interaction_area_body_entered(body):
 		
 		if Globals.tutorial_current_stage == 6: 
 			Globals.advance_tutorial( 7 )
+		
+		Event.emit_signal( "show_inventory_keys", true )
+		$crafting.play(3.6)
+		$crafting_timer.start()
 	
 	if body is Shop: 
 		if Globals.tutorial_current_stage == 15: 
 			Globals.advance_tutorial( 16 )
 		self.shop_open()
+		$shop.play()
 		
 	if body is OrderPickupArea:
 		self.focused_order_pickup_areas.append( body )
@@ -145,6 +150,8 @@ func _on_interaction_area_body_entered(body):
 		
 		if Globals.tutorial_current_stage == 12: 
 			Globals.advance_tutorial( 13 )
+		
+		Event.emit_signal( "show_inventory_keys", true )
 
 
 func _on_interaction_area_body_exited( body ):
@@ -152,6 +159,8 @@ func _on_interaction_area_body_exited( body ):
 		self.focused_crafting_area.update_ui( false )
 		self.focused_crafting_area = null
 		Globals.ui.inventory.focused_crafting_area = null
+		
+		Event.emit_signal( "show_inventory_keys", false )
 	
 	if body is Shop: 
 		self.shop_close()
@@ -161,4 +170,10 @@ func _on_interaction_area_body_exited( body ):
 		self.focused_order_pickup_areas.remove( index )
 		self.update_inventory_order_area()
 		
-		body.modulate = Color.gray
+		Event.emit_signal( "show_inventory_keys", false )
+		
+		body.set_selected( false )
+
+
+func _on_crafting_timer_timeout():
+	$crafting.stop()

@@ -1,13 +1,14 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://source/scripts/order_display.gd" type="Script" id=1]
 [ext_resource path="res://source/assets/order-background.png" type="Texture" id=2]
 [ext_resource path="res://source/assets/order-progress.png" type="Texture" id=3]
 [ext_resource path="res://source/assets/crafting-blank.png" type="Texture" id=4]
-[ext_resource path="res://source/assets/crafting-cheese.png" type="Texture" id=5]
+[ext_resource path="res://source/assets/omelette-bacon.png" type="Texture" id=5]
 [ext_resource path="res://source/assets/crafting-egg.png" type="Texture" id=6]
-[ext_resource path="res://source/assets/crafting-bacon.png" type="Texture" id=7]
+[ext_resource path="res://source/assets/omelette-egg.png" type="Texture" id=7]
 [ext_resource path="res://source/assets/order-color.png" type="Texture" id=8]
+[ext_resource path="res://source/assets/omelette-cheese.png" type="Texture" id=9]
 
 [node name="order_display" type="VBoxContainer"]
 margin_right = 40.0
@@ -17,10 +18,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 textures = {
-"Bacon": ExtResource( 7 ),
+"Bacon": ExtResource( 5 ),
 "Blank": ExtResource( 4 ),
-"Cheese": ExtResource( 5 ),
-"Egg": ExtResource( 6 )
+"Cheese": ExtResource( 9 ),
+"Egg": ExtResource( 7 )
 }
 
 [node name="waiting_progress" type="TextureProgress" parent="."]
@@ -35,17 +36,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="order_items" type="HBoxContainer" parent="."]
-margin_top = 14.0
+[node name="order" type="Node2D" parent="."]
+
+[node name="order_items" type="HBoxContainer" parent="order"]
+margin_top = 10.0
 margin_right = 62.0
-margin_bottom = 26.0
+margin_bottom = 22.0
 mouse_filter = 2
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="item_0" type="TextureRect" parent="order_items"]
+[node name="item_0" type="TextureRect" parent="order/order_items"]
 margin_left = 4.0
 margin_right = 19.0
 margin_bottom = 12.0
@@ -54,7 +57,7 @@ rect_pivot_offset = Vector2( 0, -2 )
 texture = ExtResource( 6 )
 stretch_mode = 4
 
-[node name="item_1" type="TextureRect" parent="order_items"]
+[node name="item_1" type="TextureRect" parent="order/order_items"]
 margin_left = 23.0
 margin_right = 38.0
 margin_bottom = 12.0
@@ -63,7 +66,7 @@ rect_pivot_offset = Vector2( 0, -2 )
 texture = ExtResource( 6 )
 stretch_mode = 4
 
-[node name="item_2" type="TextureRect" parent="order_items"]
+[node name="item_2" type="TextureRect" parent="order/order_items"]
 margin_left = 42.0
 margin_right = 57.0
 margin_bottom = 12.0

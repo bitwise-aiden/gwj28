@@ -30,6 +30,8 @@ func add_item( pickup ) -> bool:
 	
 	self.items.append( pickup )
 	
+	$key.show_inventory_keys( true ) 
+	
 #	self.update_ui()
 	
 	if self.should_start_cooking():
@@ -54,6 +56,9 @@ func start_cooking():
 	$crafting_slots.visible = false
 	$pan.play( "cooking" )
 	
+	$key.show_inventory_keys( false )
+	Event.emit_signal( "show_inventory_keys", false )
+	
 	if Globals.tutorial_current_stage == 8:
 		Globals.advance_tutorial( 9 )
 
@@ -70,6 +75,8 @@ func update_ui( override_visibility = true):
 
 
 func _on_cooking_timer_complete():
+	$finished.play(0.5)
+	
 	var position = self.position + self.done_direction * 30.0
 	var pickup = Globals.RESOURCE_OMELETTE.duplicate()
 	var items_with_count = {}
@@ -92,5 +99,6 @@ func _on_cooking_timer_complete():
 	self.state = states.adding
 	$cooking_progress.visible = false
 	$pan.play( "empty" )
+	
 	
 	self.update_ui( Globals.player.focused_crafting_area == self )

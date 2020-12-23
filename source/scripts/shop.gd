@@ -51,6 +51,8 @@ func shop_buy_pressed( index ):
 		if item.name != Globals.tutorial_extra_ingredient:
 			return 
 		Globals.advance_tutorial( 17 )
+	
+	$sell.play()
 		
 	self.items[ index ].stock -= 1
 	

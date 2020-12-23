@@ -11,7 +11,7 @@ onready var shadow_size = $shadow.rect_size.x
 onready var oscillation_time_elapsed = 0.0
 
 func _ready() -> void:
-#	self.visible = randi() % 100 == 0
+	self.visible = randi() % 100 == 0
 	
 	self.position = Vector2( 
 		lerp( top_left.x, bottom_right.x, randf() ),

@@ -2,7 +2,7 @@ extends Node2D
 
 
 onready var start_position = self.position
-var on_screen_position = Vector2( 200.0, 530.0 )
+onready var on_screen_position = Vector2( 200.0, self.position.y )
 var desired_move_speed = 100.0
 
 var order = null
@@ -31,13 +31,36 @@ func find_order_area() -> bool:
 	
 	for order_area in self.get_tree().get_nodes_in_group( "order_pickup_area" ):
 		if !order_area.has_order():
-			order_area.set_order( self.order ) # TODO: Add proper order here
+			order_area.set_order( self.order )
 			
 			self.target_area = order_area
 			
 			
-			var target_location = self.target_area.position - Vector2( 50.0, 0.0 )
+			var target_location = self.target_area.position - Vector2( 150.0, 0.0 )
 			var y_target = Vector2( self.position.x, target_location.y )
+			
+			self.add_queue(
+				Task.RunFunc.new(
+					funcref( $flames_left, "set_visible" ),
+					[ false ]
+				)
+			)
+			
+			self.add_queue( 
+				Task.Lerp.new( 
+					PI * 0.5,
+					0,
+					0.5,
+					funcref( self, "set_rotation" )
+				)
+			)
+			
+			self.add_queue(
+				Task.RunFunc.new(
+					funcref( $flames_left, "set_visible" ),
+					[ true ]
+				)
+			)
 			
 			self.add_queue(
 				Task.Lerp.new(
@@ -45,6 +68,30 @@ func find_order_area() -> bool:
 					y_target, 
 					self.duration_to_location( self.position, y_target ),
 					funcref( self, "set_position" ) 
+				)
+			)
+			
+			self.add_queue(
+				Task.RunFunc.new(
+					funcref( $flames_right, "set_visible" ),
+					[ false ]
+				)
+			)
+			
+			
+			self.add_queue( 
+				Task.Lerp.new( 
+					0,
+					PI * 0.5,
+					0.5,
+					funcref( self, "set_rotation" )
+				)
+			)
+			
+			self.add_queue(
+				Task.RunFunc.new(
+					funcref( $flames_right, "set_visible" ),
+					[ true ]
 				)
 			)
 			
@@ -60,6 +107,27 @@ func find_order_area() -> bool:
 			self.add_queue(
 				Task.RunFunc.new(
 					funcref( self, "prepare_order_area" )
+				)
+			)
+			
+			self.add_queue(
+				Task.RunFunc.new(
+					funcref( $flames_right, "set_visible" ),
+					[ false ]
+				)
+			)
+			
+			self.add_queue(
+				Task.RunFunc.new(
+					funcref( $flames_left, "set_visible" ),
+					[ false ]
+				)
+			)
+			
+			self.add_queue(
+				Task.RunFunc.new(
+					funcref( self.order, "set_should_tick" ),
+					[ true ]
 				)
 			)
 			
@@ -105,6 +173,29 @@ func wait_for_collection() -> bool:
 	var x_target = Vector2( self.start_position.x, self.position.y )
 	
 	self.add_queue(
+		Task.RunFunc.new(
+			funcref( $flames_right, "set_visible" ),
+			[ true ]
+		)
+	)
+	
+	self.add_queue( 
+		Task.Lerp.new(
+			PI * 0.5,
+			-PI * 0.5,
+			0.5,
+			funcref( self, "set_rotation" )
+		)
+	)
+			
+	self.add_queue(
+		Task.RunFunc.new(
+			funcref( $flames_left, "set_visible" ),
+			[ true ]
+		)
+	)
+	
+	self.add_queue(
 		Task.Lerp.new(
 			self.position, 
 			x_target, 
@@ -137,7 +228,14 @@ func wait_for_order() -> bool:
 		return false
 	
 	self.order.order_pickup = self
-#	$order_id.text = "#%d" % self.order.id
+	$color.modulate = self.order.color
+	
+	self.add_queue(
+		Task.RunFunc.new(
+			funcref( self, "set_rotation" ),
+			[ PI * 0.5 ]
+		)
+	)
 	
 	self.add_queue(
 		Task.Lerp.new( 

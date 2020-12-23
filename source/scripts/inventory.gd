@@ -173,6 +173,9 @@ func add_item_to_crafting_area( slot_index: int ) -> void:
 		Task.RunFunc.new( funcref( self.focused_crafting_area, "update_ui" ) )
 	)
 	
+	$crafting.play()
+	$crafting_timer.start()
+	
 	if Globals.tutorial_current_stage == 7:
 		Globals.advance_tutorial( 8 )
 
@@ -200,19 +203,31 @@ func add_item_to_order_area( slot_index: int ) -> void:
 #	self.focused_order_area.fulfill_order( pickup )
 	self.inventory_slots[ slot_index ].decrement_quantity()
 	
+	$order.play()
+	
 	self.lerp_item( 
 		pickup, 
 		self.inventory_slots[ slot_index ].display.rect_global_position + Vector2( 32.0, 0.0 ),
 #		Globals.player.position,
 		self.focused_order_area.position,
-		Task.RunFunc.new( funcref( self.focused_order_area, "fulfill_order" ), [ pickup ] )
+		Task.RunFunc.new( funcref( self, "use_belt" ), [ self.focused_order_area, pickup ] )
 	)
 
 
-func lerp_item( item, from: Vector2, to: Vector2, post_task: BaseTask ) -> void:
+func use_belt( order_area, pickup ):
+	self.lerp_item(
+		pickup, 
+		order_area.position,
+		order_area.position - Vector2( 100.0, 0.0 ),
+		Task.RunFunc.new( funcref( order_area, "fulfill_order" ), [ pickup ] ),
+		0.75
+	)
+
+
+func lerp_item( item, from: Vector2, to: Vector2, post_task: BaseTask, duration: float = 0.3 ) -> void:
 	for pickup_lerper in self.get_tree().get_nodes_in_group( "pickup_lerper" ):
 		if !pickup_lerper.visible:
-			pickup_lerper.lerp_texture( item.texture, from, to, 0.3 )
+			pickup_lerper.lerp_texture( item.texture, from, to, duration )
 			TaskManager.add_queue( 
 				pickup_lerper.name,
 				post_task
@@ -253,3 +268,7 @@ func update_controller_ui():
 			self.inventory_slots[ i ].display.modulate = Color.white
 		else:
 			self.inventory_slots[ i ].display.modulate = Color("b0b0b0")
+
+
+func _on_crafting_timer_timeout():
+	$crafting.stop()

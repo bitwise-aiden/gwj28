@@ -14,42 +14,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="items" type="HBoxContainer" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -75.0
-margin_top = -27.5
-margin_right = 75.0
-margin_bottom = 27.5
-rect_min_size = Vector2( 150, 0 )
-alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="item_0" parent="." instance=ExtResource( 1 )]
+margin_left = 421.0
+margin_top = 272.5
+margin_right = 457.0
+margin_bottom = 327.5
 
-[node name="item_0" parent="items" instance=ExtResource( 1 )]
-margin_left = 17.0
-margin_right = 53.0
-
-[node name="item_1" parent="items" instance=ExtResource( 1 )]
-margin_left = 57.0
-margin_right = 93.0
+[node name="item_1" parent="." instance=ExtResource( 1 )]
+margin_left = 494.0
+margin_top = 272.5
+margin_right = 530.0
+margin_bottom = 327.5
 index = 1
 
-[node name="item_2" parent="items" instance=ExtResource( 1 )]
-margin_left = 97.0
-margin_right = 133.0
+[node name="item_2" parent="." instance=ExtResource( 1 )]
+margin_left = 567.0
+margin_top = 272.5
+margin_right = 603.0
+margin_bottom = 327.5
 index = 2
-
-[node name="close" type="Button" parent="."]
-margin_left = 597.537
-margin_top = 230.963
-margin_right = 617.537
-margin_bottom = 250.963
-text = "X"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-[connection signal="pressed" from="close" to="." method="_on_close_pressed"]

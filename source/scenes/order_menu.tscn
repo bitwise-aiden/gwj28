@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://source/scripts/order_menu.gd" type="Script" id=1]
 [ext_resource path="res://source/resources/pickups/pickup_egg.tres" type="Resource" id=2]
@@ -7,10 +7,11 @@
 [ext_resource path="res://source/resources/pickups/pickup_cheese.tres" type="Resource" id=5]
 [ext_resource path="res://source/assets/order_area.png" type="Texture" id=6]
 [ext_resource path="res://source/scenes/star_rating.tscn" type="PackedScene" id=7]
-[ext_resource path="res://source/assets/crafting-cheese.png" type="Texture" id=8]
-[ext_resource path="res://source/assets/crafting-egg.png" type="Texture" id=9]
+[ext_resource path="res://source/assets/omelette-bacon.png" type="Texture" id=8]
+[ext_resource path="res://source/assets/omelette-egg.png" type="Texture" id=9]
 [ext_resource path="res://source/assets/crafting-blank.png" type="Texture" id=10]
-[ext_resource path="res://source/assets/crafting-bacon.png" type="Texture" id=11]
+[ext_resource path="res://source/assets/omelette-cheese.png" type="Texture" id=11]
+[ext_resource path="res://source/audio/message_recieved.ogg" type="AudioStream" id=12]
 
 [node name="order_menu" type="TextureRect"]
 margin_left = 64.0
@@ -36,9 +37,9 @@ margin_top = 101.626
 margin_right = 97.1815
 margin_bottom = 127.626
 textures = {
-"Bacon": ExtResource( 11 ),
+"Bacon": ExtResource( 8 ),
 "Blank": ExtResource( 10 ),
-"Cheese": ExtResource( 8 ),
+"Cheese": ExtResource( 11 ),
 "Egg": ExtResource( 9 )
 }
 
@@ -48,9 +49,9 @@ margin_top = 149.289
 margin_right = 96.9632
 margin_bottom = 175.289
 textures = {
-"Bacon": ExtResource( 11 ),
+"Bacon": ExtResource( 8 ),
 "Blank": ExtResource( 10 ),
-"Cheese": ExtResource( 8 ),
+"Cheese": ExtResource( 11 ),
 "Egg": ExtResource( 9 )
 }
 
@@ -60,9 +61,9 @@ margin_top = 194.725
 margin_right = 96.6269
 margin_bottom = 220.725
 textures = {
-"Bacon": ExtResource( 11 ),
+"Bacon": ExtResource( 8 ),
 "Blank": ExtResource( 10 ),
-"Cheese": ExtResource( 8 ),
+"Cheese": ExtResource( 11 ),
 "Egg": ExtResource( 9 )
 }
 
@@ -72,9 +73,9 @@ margin_top = 148.844
 margin_right = 208.989
 margin_bottom = 174.844
 textures = {
-"Bacon": ExtResource( 11 ),
+"Bacon": ExtResource( 8 ),
 "Blank": ExtResource( 10 ),
-"Cheese": ExtResource( 8 ),
+"Cheese": ExtResource( 11 ),
 "Egg": ExtResource( 9 )
 }
 
@@ -84,9 +85,9 @@ margin_top = 195.171
 margin_right = 209.435
 margin_bottom = 221.171
 textures = {
-"Bacon": ExtResource( 11 ),
+"Bacon": ExtResource( 8 ),
 "Blank": ExtResource( 10 ),
-"Cheese": ExtResource( 8 ),
+"Cheese": ExtResource( 11 ),
 "Egg": ExtResource( 9 )
 }
 
@@ -110,3 +111,7 @@ index = 3
 [node name="star_rating5" parent="stars" instance=ExtResource( 7 )]
 position = Vector2( 208, 94 )
 index = 4
+
+[node name="order" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 12 )
+volume_db = -12.0
